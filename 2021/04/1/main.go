@@ -6,11 +6,13 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/toaster/advent_of_code/internal/io"
 )
 
 func main() {
 	input, err := ioutil.ReadAll(os.Stdin)
-	reportErr("failed to read standard input", err)
+	io.ReportError("failed to read standard input", err)
 
 	var numbers []int
 	var boards []*board
@@ -106,7 +108,7 @@ func parseNumbers(line string, sep string) (numbers []int) {
 
 		v, err := strconv.Atoi(s)
 		if err != nil {
-			reportErr("failed to parse input", err)
+			io.ReportError("failed to parse input", err)
 		}
 
 		numbers = append(numbers, v)
@@ -124,15 +126,4 @@ type field struct {
 	v int
 	x int
 	y int
-}
-
-func reportErr(msg string, err error) {
-	if err != nil {
-		if msg != "" {
-			_, _ = fmt.Fprintln(os.Stderr, msg+":", err)
-		} else {
-			_, _ = fmt.Fprintln(os.Stderr, err)
-		}
-		os.Exit(1)
-	}
 }

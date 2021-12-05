@@ -5,11 +5,13 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+
+	"github.com/toaster/advent_of_code/internal/io"
 )
 
 func main() {
 	input, err := ioutil.ReadAll(os.Stdin)
-	reportErr("failed to read standard input", err)
+	io.ReportError("failed to read standard input", err)
 
 	var counts []int
 	lineCount := 0
@@ -23,7 +25,7 @@ func main() {
 			case '1':
 				v = 1
 			default:
-				reportErr("", fmt.Errorf("unexpected bit: %c", r))
+				io.ReportError("", fmt.Errorf("unexpected bit: %c", r))
 			}
 			if i < len(counts) {
 				counts[i] += v
@@ -45,15 +47,4 @@ func main() {
 	}
 
 	fmt.Println(gamma * epsilon)
-}
-
-func reportErr(msg string, err error) {
-	if err != nil {
-		if msg != "" {
-			_, _ = fmt.Fprintln(os.Stderr, msg+":", err)
-		} else {
-			_, _ = fmt.Fprintln(os.Stderr, err)
-		}
-		os.Exit(1)
-	}
 }
