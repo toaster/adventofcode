@@ -4,8 +4,26 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strconv"
 	"strings"
 )
+
+// ParseInts parses and returns a sequence of integer separated by given separator.
+func ParseInts(line string, sep string) (numbers []int) {
+	for _, s := range strings.Split(line, sep) {
+		if s == "" {
+			continue
+		}
+
+		v, err := strconv.Atoi(s)
+		if err != nil {
+			ReportError("failed to parse input", err)
+		}
+
+		numbers = append(numbers, v)
+	}
+	return
+}
 
 // ReadLines reads all lines from os.Stdin.
 func ReadLines() []string {

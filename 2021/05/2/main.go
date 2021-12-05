@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/toaster/advent_of_code/internal/io"
@@ -81,24 +80,8 @@ func max(a, b int) int {
 }
 
 func parsePoint(s string) point {
-	nums := parseNumbers(s, ",")
+	nums := io.ParseInts(s, ",")
 	return point{nums[0], nums[1]}
-}
-
-func parseNumbers(line string, sep string) (numbers []int) {
-	for _, s := range strings.Split(line, sep) {
-		if s == "" {
-			continue
-		}
-
-		v, err := strconv.Atoi(s)
-		if err != nil {
-			io.ReportError("failed to parse input", err)
-		}
-
-		numbers = append(numbers, v)
-	}
-	return
 }
 
 type point struct {

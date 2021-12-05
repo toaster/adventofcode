@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
-	"strings"
 
 	"github.com/toaster/advent_of_code/internal/io"
 )
@@ -16,7 +14,7 @@ func main() {
 	var y int
 	for i, line := range io.ReadLines() {
 		if i == 0 {
-			numbers = parseNumbers(line, ",")
+			numbers = io.ParseInts(line, ",")
 			continue
 		}
 
@@ -27,7 +25,7 @@ func main() {
 			continue
 		}
 
-		nums := parseNumbers(line, " ")
+		nums := io.ParseInts(line, " ")
 		var row []*field
 		for x, num := range nums {
 			f := &field{
@@ -94,22 +92,6 @@ func mark(b *board, n int) bool {
 		return donex || doney
 	}
 	return false
-}
-
-func parseNumbers(line string, sep string) (numbers []int) {
-	for _, s := range strings.Split(line, sep) {
-		if s == "" {
-			continue
-		}
-
-		v, err := strconv.Atoi(s)
-		if err != nil {
-			io.ReportError("failed to parse input", err)
-		}
-
-		numbers = append(numbers, v)
-	}
-	return
 }
 
 type board struct {
