@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strconv"
 	"strings"
@@ -11,14 +10,11 @@ import (
 )
 
 func main() {
-	input, err := ioutil.ReadAll(os.Stdin)
-	io.ReportError("failed to read standard input", err)
-
 	var numbers []int
 	var boards []*board
 	var current *board
 	var y int
-	for i, line := range strings.Split(strings.Trim(string(input), "\n"), "\n") {
+	for i, line := range io.ReadLines() {
 		if i == 0 {
 			numbers = parseNumbers(line, ",")
 			continue

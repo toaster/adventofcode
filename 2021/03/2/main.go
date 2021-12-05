@@ -2,18 +2,12 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
-	"strings"
 
 	"github.com/toaster/advent_of_code/internal/io"
 )
 
 func main() {
-	input, err := ioutil.ReadAll(os.Stdin)
-	io.ReportError("failed to read standard input", err)
-
-	lines := strings.Split(strings.Trim(string(input), "\n"), "\n")
+	lines := io.ReadLines()
 	var o2Candidates []string
 	var co2Candidates []string
 	for _, line := range lines {

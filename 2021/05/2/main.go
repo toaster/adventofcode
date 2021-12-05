@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
 	"strconv"
 	"strings"
 
@@ -11,12 +9,9 @@ import (
 )
 
 func main() {
-	input, err := ioutil.ReadAll(os.Stdin)
-	io.ReportError("failed to read standard input", err)
-
 	var max point
 	plan := map[point]int{}
-	for _, line := range strings.Split(strings.Trim(string(input), "\n"), "\n") {
+	for _, line := range io.ReadLines() {
 		mp := parseLine(line, plan)
 		if mp.x > max.x {
 			max.x = mp.x

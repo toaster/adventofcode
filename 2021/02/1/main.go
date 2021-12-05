@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
 	"strconv"
 	"strings"
 
@@ -11,12 +9,9 @@ import (
 )
 
 func main() {
-	input, err := ioutil.ReadAll(os.Stdin)
-	io.ReportError("failed to read standard input", err)
-
 	x := 0
 	y := 0
-	for _, line := range strings.Split(strings.Trim(string(input), "\n"), "\n") {
+	for _, line := range io.ReadLines() {
 		tokens := strings.Split(line, " ")
 		if len(tokens) != 2 {
 			io.ReportError("failed to parse input", fmt.Errorf("wrong token count: %d", len(tokens)))

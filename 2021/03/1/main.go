@@ -2,20 +2,14 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
-	"strings"
 
 	"github.com/toaster/advent_of_code/internal/io"
 )
 
 func main() {
-	input, err := ioutil.ReadAll(os.Stdin)
-	io.ReportError("failed to read standard input", err)
-
 	var counts []int
 	lineCount := 0
-	for _, line := range strings.Split(strings.Trim(string(input), "\n"), "\n") {
+	for _, line := range io.ReadLines() {
 		lineCount++
 		for i, r := range line {
 			var v int
