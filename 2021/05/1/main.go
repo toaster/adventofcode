@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/toaster/advent_of_code/internal/io"
+	"github.com/toaster/advent_of_code/internal/math"
 )
 
 func main() {
@@ -53,21 +54,14 @@ func parseLine(line string, plan map[point]int) point {
 		return point{0, 0}
 	}
 
-	sx, ex := sort(start.x, end.x)
-	sy, ey := sort(start.y, end.y)
+	sx, ex := math.Sort2Int(start.x, end.x)
+	sy, ey := math.Sort2Int(start.y, end.y)
 	for x := sx; x <= ex; x++ {
 		for y := sy; y <= ey; y++ {
 			plan[point{x, y}]++
 		}
 	}
 	return point{ex, ey}
-}
-
-func sort(a, b int) (int, int) {
-	if a < b {
-		return a, b
-	}
-	return b, a
 }
 
 func parsePoint(s string) point {

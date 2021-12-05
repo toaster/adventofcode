@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/toaster/advent_of_code/internal/io"
+	"github.com/toaster/advent_of_code/internal/math"
 )
 
 func main() {
@@ -20,7 +21,7 @@ func main() {
 		}
 	}
 
-	// printPlan(plan, max)
+	// printPlan(plan, MaxInt)
 	count := 0
 	for _, i := range plan {
 		if i > 1 {
@@ -69,14 +70,7 @@ func parseLine(line string, plan map[point]int) point {
 			plan[point{x, y}]++
 		}
 	}
-	return point{max(start.x, end.x), max(start.y, end.y)}
-}
-
-func max(a, b int) int {
-	if a < b {
-		return b
-	}
-	return a
+	return point{math.MaxInt(start.x, end.x), math.MaxInt(start.y, end.y)}
 }
 
 func parsePoint(s string) point {
