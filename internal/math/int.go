@@ -1,5 +1,13 @@
 package math
 
+// AbsInt compute the absolute value of an integer.
+func AbsInt(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
 // MaxInt returns the maximum of two integers.
 func MaxInt(a, b int) int {
 	if a < b {

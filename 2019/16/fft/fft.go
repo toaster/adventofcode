@@ -1,7 +1,7 @@
 package fft
 
 import (
-	"github.com/toaster/advent_of_code/2019/math"
+	"github.com/toaster/advent_of_code/internal/math"
 )
 
 var pattern = [4]int{0, 1, 0, -1}

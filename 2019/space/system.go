@@ -4,7 +4,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/toaster/advent_of_code/2019/math"
+	math2019 "github.com/toaster/advent_of_code/2019/math"
+	"github.com/toaster/advent_of_code/internal/math"
 )
 
 // System represents a system of moons.
@@ -65,7 +66,7 @@ func (s *System) ComputePeriod() int {
 			break
 		}
 	}
-	return math.LCM([]int{px, py, pz})
+	return math2019.LCM([]int{px, py, pz})
 }
 
 func (s *System) getState() (sx, sy, sz [][]int) {

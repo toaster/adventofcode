@@ -4,7 +4,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/toaster/advent_of_code/2019/math"
+	math2019 "github.com/toaster/advent_of_code/2019/math"
+	"github.com/toaster/advent_of_code/internal/math"
 )
 
 // Map shows asteroids in a space segment.
@@ -40,7 +41,7 @@ func ParseMap(input string) *Map {
 	for i := 0; i < m.width; i++ {
 		numbers = append(numbers, i)
 	}
-	m.lcm = math.LCM(numbers)
+	m.lcm = math2019.LCM(numbers)
 
 	return &m
 }

@@ -25,14 +25,6 @@ func primeFactors(n int) map[int]int {
 	return pfs
 }
 
-// AbsInt compute the absolute value of an integer.
-func AbsInt(x int) int {
-	if x < 0 {
-		return -x
-	}
-	return x
-}
-
 // LCM computes the lowest common multiplier of a slice of integers.
 func LCM(numbers []int) int {
 	lcmpfs := map[int]int{}

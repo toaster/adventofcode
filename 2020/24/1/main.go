@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/toaster/advent_of_code/2019/math"
+	"github.com/toaster/advent_of_code/internal/math"
 )
 
 type point struct {
