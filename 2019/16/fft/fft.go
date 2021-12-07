@@ -17,7 +17,7 @@ func Perform(input []int, phaseCount int) []int {
 				pi := ((l + 1) / (i + 1)) % 4
 				v += data[l] * pattern[pi]
 			}
-			nextData = append(nextData, math.Abs(v)%10)
+			nextData = append(nextData, math.AbsInt(v)%10)
 		}
 		data = nextData
 	}

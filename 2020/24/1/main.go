@@ -27,22 +27,22 @@ func main() {
 		for len(line) > 0 {
 			// fmt.Println("line", line, "p", p)
 			if strings.HasPrefix(line, "se") {
-				p.x += math.Abs(p.y) % 2
+				p.x += math.AbsInt(p.y) % 2
 				p.y++
 				line = line[2:]
 			} else if strings.HasPrefix(line, "sw") {
 				p.y++
-				p.x -= math.Abs(p.y) % 2
+				p.x -= math.AbsInt(p.y) % 2
 				line = line[2:]
 			} else if strings.HasPrefix(line, "w") {
 				p.x--
 				line = line[1:]
 			} else if strings.HasPrefix(line, "nw") {
 				p.y--
-				p.x -= math.Abs(p.y) % 2
+				p.x -= math.AbsInt(p.y) % 2
 				line = line[2:]
 			} else if strings.HasPrefix(line, "ne") {
-				p.x += math.Abs(p.y) % 2
+				p.x += math.AbsInt(p.y) % 2
 				p.y--
 				line = line[2:]
 			} else if strings.HasPrefix(line, "e") {

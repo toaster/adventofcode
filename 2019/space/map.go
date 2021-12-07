@@ -141,14 +141,14 @@ func (m *Map) scan(x int, y int) map[Point][]Point {
 				dy := sy - y
 				var np Point
 				if dx == 0 {
-					np = Point{X: dx, Y: dy / math.Abs(dy)}
+					np = Point{X: dx, Y: dy / math.AbsInt(dy)}
 				} else {
-					f := m.lcm / math.Abs(dx)
+					f := m.lcm / math.AbsInt(dx)
 					np = Point{X: f * dx, Y: f * dy}
 				}
 				if len(asteroids[np]) == 0 {
 					asteroids[np] = []Point{{sx, sy}}
-				} else if math.Abs(asteroids[np][0].X-x) < math.Abs(dx) {
+				} else if math.AbsInt(asteroids[np][0].X-x) < math.AbsInt(dx) {
 					asteroids[np] = append(asteroids[np], Point{sx, sy})
 				} else {
 					asteroids[np] = append([]Point{{sx, sy}}, asteroids[np]...)

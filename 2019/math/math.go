@@ -25,8 +25,8 @@ func primeFactors(n int) map[int]int {
 	return pfs
 }
 
-// Abs compute the absolute value of an integer.
-func Abs(x int) int {
+// AbsInt compute the absolute value of an integer.
+func AbsInt(x int) int {
 	if x < 0 {
 		return -x
 	}

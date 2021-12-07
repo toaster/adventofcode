@@ -92,13 +92,13 @@ func (s *System) Energy() int {
 	e := 0
 	for _, moon := range s.Moons {
 		pe := 0
-		pe += math.Abs(moon.Pos.X)
-		pe += math.Abs(moon.Pos.Y)
-		pe += math.Abs(moon.Pos.Z)
+		pe += math.AbsInt(moon.Pos.X)
+		pe += math.AbsInt(moon.Pos.Y)
+		pe += math.AbsInt(moon.Pos.Z)
 		ke := 0
-		ke += math.Abs(moon.Vel.X)
-		ke += math.Abs(moon.Vel.Y)
-		ke += math.Abs(moon.Vel.Z)
+		ke += math.AbsInt(moon.Vel.X)
+		ke += math.AbsInt(moon.Vel.Y)
+		ke += math.AbsInt(moon.Vel.Z)
 		e += pe * ke
 	}
 	return e

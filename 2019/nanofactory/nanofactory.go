@@ -62,7 +62,7 @@ func (r *Refinery) ComputeFuelProducableWithOreAmount(oreAmount int) int {
 		r.inv = map[string]int{}
 		oa := r.computeOre("FUEL", fa)
 		ok = oa < oreAmount
-		if math.Abs(step) < 2 {
+		if math.AbsInt(step) < 2 {
 			if ok {
 				break
 			} else {
@@ -70,9 +70,9 @@ func (r *Refinery) ComputeFuelProducableWithOreAmount(oreAmount int) int {
 			}
 		} else {
 			if ok {
-				step = math.Abs(step) / 2
+				step = math.AbsInt(step) / 2
 			} else {
-				step = -math.Abs(step) / 2
+				step = -math.AbsInt(step) / 2
 			}
 		}
 	}

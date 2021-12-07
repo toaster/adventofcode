@@ -130,12 +130,12 @@ func countBlackNeighbours(p point, tiles map[point]bool) int {
 }
 
 func sw(p point) point {
-	xOff := math.Abs(p.y) % 2
+	xOff := math.AbsInt(p.y) % 2
 	return point{x: p.x - 1 + xOff, y: p.y + 1}
 }
 
 func se(p point) point {
-	xOff := math.Abs(p.y) % 2
+	xOff := math.AbsInt(p.y) % 2
 	return point{x: p.x + xOff, y: p.y + 1}
 }
 
@@ -144,12 +144,12 @@ func e(p point) point {
 }
 
 func ne(p point) point {
-	xOff := math.Abs(p.y) % 2
+	xOff := math.AbsInt(p.y) % 2
 	return point{x: p.x + xOff, y: p.y - 1}
 }
 
 func nw(p point) point {
-	xOff := math.Abs(p.y) % 2
+	xOff := math.AbsInt(p.y) % 2
 	return point{x: p.x - 1 + xOff, y: p.y - 1}
 }
 
