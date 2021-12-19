@@ -20,6 +20,16 @@ func AverageInt(nums []int) int {
 	return sum / count
 }
 
+// ContainsInt returns whether a slice of integers contains a specific one.
+func ContainsInt(nums []int, num int) bool {
+	for _, n := range nums {
+		if n == num {
+			return true
+		}
+	}
+	return false
+}
+
 // MaxInt returns the maximum of two integers.
 func MaxInt(a, b int) int {
 	if a < b {
