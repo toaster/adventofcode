@@ -75,6 +75,39 @@ type Point2D struct {
 	Y int
 }
 
+// Add adds another two-dimensional coordinate to this one.
+func (p Point2D) Add(other Point2D) Point2D {
+	return Point2D{p.X + other.X, p.Y + other.Y}
+}
+
+// AddXY adds dimension values to this point.
+// This works like Add but saves the Point2D initialization if you only have the single dimensions at hand.
+func (p Point2D) AddXY(x, y int) Point2D {
+	return Point2D{p.X + x, p.Y + y}
+}
+
+// IsGreaterThan returns whether any dimension of this point is greater than the respective dimension of the other point.
+func (p Point2D) IsGreaterThan(other Point2D) bool {
+	return p.X > other.X || p.Y > other.Y
+}
+
+// IsLessThan returns whether any dimension of this point is less than the respective dimension of the other point.
+func (p Point2D) IsLessThan(other Point2D) bool {
+	return p.X < other.X || p.Y < other.Y
+}
+
+// Subtract subtracts another two-dimensional coordinate from this one.
+// The result is the coordinate of this point relative to the other one.
+func (p Point2D) Subtract(other Point2D) Point2D {
+	return Point2D{p.X - other.X, p.Y - other.Y}
+}
+
+// SubtractXY subtracts dimension values from this point.
+// This works like Subtract but saves the Point2D initialization if you only have the single dimensions at hand.
+func (p Point2D) SubtractXY(x, y int) Point2D {
+	return Point2D{p.X - x, p.Y - y}
+}
+
 // Point3D is a three-dimensional point.
 type Point3D struct {
 	X int
