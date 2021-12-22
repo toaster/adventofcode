@@ -8,6 +8,16 @@ import (
 	"strings"
 )
 
+// ParseBool parses a string into a boolean value.
+func ParseBool(s string) bool {
+	switch strings.ToLower(s) {
+	case "on", "true", "yes", "1":
+		return true
+	}
+
+	return false
+}
+
 // ParseInts parses and returns a sequence of integer separated by given separator.
 func ParseInts(line string, sep string) (numbers []int) {
 	for _, s := range strings.Split(line, sep) {

@@ -120,9 +120,19 @@ func (p Point3D) Add(other Point3D) Point3D {
 	return Point3D{p.X + other.X, p.Y + other.Y, p.Z + other.Z}
 }
 
+// IsGreaterThan returns whether any dimension of this point is greater than the respective dimension of the other point.
+func (p Point3D) IsGreaterThan(other Point3D) bool {
+	return p.X > other.X || p.Y > other.Y || p.Z > other.Z
+}
+
+// IsLessThan returns whether any dimension of this point is less than the respective dimension of the other point.
+func (p Point3D) IsLessThan(other Point3D) bool {
+	return p.X < other.X || p.Y < other.Y || p.Z < other.Z
+}
+
 // String returns a string representation of the point.
 func (p Point3D) String() string {
-	return fmt.Sprintf("(%5d, %5d, %5d)", p.X, p.Y, p.Z)
+	return fmt.Sprintf("(%d,%d,%d)", p.X, p.Y, p.Z)
 }
 
 // Subtract subtracts another three-dimensional coordinate from this one.
