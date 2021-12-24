@@ -1,0 +1,252 @@
+inp w     # w = i1 ###############################
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0   # x = 1
+mul y 0
+add y 25
+mul y x
+add y 1   # y = 26
+mul z y
+mul y 0
+add y w   # y = i1
+add y 9   # y = i1+9
+mul y x
+add z y   # z = z1 = i1+9
+inp w     # w = i2 ###############################
+mul x 0
+add x z
+mod x 26  # x = i1+9
+div z 1
+add x 12  # x = i1+21
+eql x w   # x = 0, da x > 21
+eql x 0   # x = 1
+mul y 0
+add y 25
+mul y x
+add y 1   # y = 26
+mul z y   # z = 26z1
+mul y 0
+add y w   # y = i2
+add y 4   # y = i2+4
+mul y x
+add z y   # z = z2 = 26z1+i2+4
+inp w     # w = i3 ###############################
+mul x 0
+add x z
+mod x 26  # x = i2+4
+div z 1
+add x 12  # x = i2+16
+eql x w   # x = 0, da x > 16
+eql x 0   # x = 1
+mul y 0
+add y 25
+mul y x
+add y 1   # y = 26
+mul z y   # z = 26z2
+mul y 0
+add y w   # y = i3
+add y 2   # y = i3+2
+mul y x
+add z y   # z = z3 = 26z2+i3+2
+inp w     # w = i4 ###############################
+mul x 0
+add x z
+mod x 26  # x = i3+2
+div z 26  # z = z2
+add x -9  # x = i3-7
+eql x w   # x = i3-7 == i4 ? 1 : 0                # c4 = i3-7 == i4
+eql x 0   # x = i3-7 == i4 ? 0 : 1
+mul y 0
+add y 25
+mul y x   # y = i3-7 == i4 ? 0 : 25
+add y 1   # y = i3-7 == i4 ? 1 : 26
+mul z y   # z = i3-7 == i4 ? z2 : 26z2
+mul y 0
+add y w   # y = i4
+add y 5   # y = i4+5
+mul y x   # y = i3-7 == i4 ? 0 : i4+5
+add z y   # z = z4 = i3-7 == i4 ? z2 : 26z2+i4+5
+inp w     # w = i5 ###############################
+mul x 0
+add x z
+mod x 26  # x = i3-7 == i4 ? i2+4 : i4+5
+div z 26  # z = i3-7 == i4 ? z1 : z2
+add x -9  # x = i3-7 == i4 ? i2-5 : i4-4
+eql x w   # x = i3-7 == i4 ? ( i2-5 == i5 ? 1 : 0 ) : ( i4-4 == i5 ? 1 : 0 )  # c5a = i2-5 == i5
+eql x 0   # x = i3-7 == i4 ? ( i2-5 == i5 ? 0 : 1 ) : ( i4-4 == i5 ? 0 : 1 )  # c5b = i4-4 == i5
+mul y 0
+add y 25
+mul y x   # y = i3-7 == i4 ? ( i2-5 == i5 ? 0 : 25 ) : ( i4-4 == i5 ? 0 : 25 )
+add y 1   # y = i3-7 == i4 ? ( i2-5 == i5 ? 1 : 26 ) : ( i4-4 == i5 ? 1 : 26 )
+mul z y   # z = i3-7 == i4 ? ( i2-5 == i5 ? z1 : 26z1 ) : ( i4-4 == i5 ? z2 : 26z2 )
+mul y 0
+add y w
+add y 1   # y = i5+1
+mul y x   # y = i3-7 == i4 ? ( i2-5 == i5 ? 0 : i5+1 ) : ( i4-4 == i5 ? 0 : i5+1 )
+add z y   # z = z5 = i3-7 == i4 ? ( i2-5 == i5 ? z1 : 26z1+i5+1 ) : ( i4-4 == i5 ? z2 : 26z2+i5+1 )
+inp w     # w = i6 ###############################
+mul x 0
+add x z
+mod x 26  # x = i3-7 == i4 ? ( i2-5 == i5 ? i1+9 : i5+1 ) : ( i4-4 == i5 ? i2+4 : i5+1 )
+div z 1
+add x 14  # x = i3-7 == i4 ?( i2-5 == i5 ? i1+23 : i5+15 ) : ( i4-4 == i5 ? i2+18 : i5+15 )
+eql x w   # x = 0 da x > 15
+eql x 0   # x = 1
+mul y 0
+add y 25
+mul y x
+add y 1   # y = 26
+mul z y   # z = 26z5
+mul y 0
+add y w
+add y 6   # y = i6+6
+mul y x
+add z y   # z = z6 = 26z5+i6+6
+inp w     # w = i7 ###############################
+mul x 0
+add x z
+mod x 26  # x = i6+6
+div z 1
+add x 14  # x = i6+20
+eql x w
+eql x 0   # x = 1
+mul y 0
+add y 25
+mul y x
+add y 1   # y = 26
+mul z y   # z = 26z6
+mul y 0
+add y w
+add y 11  # y = i7+11
+mul y x
+add z y   # z = z7 = 26z6+i7+11
+inp w     # w = i8 ###############################
+mul x 0
+add x z
+mod x 26  # x = i7+11
+div z 26  # z = z6
+add x -10 # x = i7+1
+eql x w   # x = i7+1 == i8 ? 1 : 0 # c8 = i7+1 == i8
+eql x 0   # x = i7+1 == i8 ? 0 : 1
+mul y 0
+add y 25
+mul y x   # y = i7+1 == i8 ? 0 : 25
+add y 1   # y = i7+1 == i8 ? 1 : 26
+mul z y   # z = i7+1 == i8 ? z6 : 26z6
+mul y 0
+add y w
+add y 15  # y = i8+15
+mul y x   # y = i7+1 == i8 ? 0 : i8+15
+add z y   # z = z8 = i7+1 == i8 ? z6 : 26z6+i8+15
+inp w     # w = i9 ###############################
+mul x 0
+add x z
+mod x 26  # x = i7+1 == i8 ? i6+6 : i8+15
+div z 1
+add x 15  # x = i7+1 == i8 ? i6+21 : i8+30
+eql x w   # x = 0 da x >=21
+eql x 0   # x = 1
+mul y 0
+add y 25
+mul y x
+add y 1   # y = 26
+mul z y   # z = 26z8
+mul y 0
+add y w
+add y 7   # y = i9+7
+mul y x
+add z y   # z = z9 = 26z8+i9+7
+inp w     # w = i10 ###############################
+mul x 0
+add x z
+mod x 26  # x = i9+7
+div z 26  # z = z8
+add x -2  # x = i9+5
+eql x w   # x = i9+5 == i10 ? 1 : 0 # c10 = i9+5 == i10
+eql x 0   # x = i9+5 == i10 ? 0 : 1
+mul y 0
+add y 25
+mul y x   # y = i9+5 == i10 ? 0 : 25
+add y 1   # y = i9+5 == i10 ? 1 : 26
+mul z y   # z = i9+5 == i10 ? z8 : 26z8
+mul y 0
+add y w
+add y 12  # y = i10+12
+mul y x   # y = i9+5 == i10 ? 0 : i10+12
+add z y   # z = z10 = i9+5 == i10 ? z8 : 26z8+i10+12
+inp w     # w = i11 ###############################
+mul x 0
+add x z
+mod x 26  # x = i9+5 == i10 ? ( i7+1 == i8 ? i6+6 : i8+15 ) : i10+12
+div z 1
+add x 11
+eql x w   # x = 0 wg. x > 11
+eql x 0   # x = 1
+mul y 0
+add y 25
+mul y x
+add y 1   # y = 26
+mul z y   # z = 26z10
+mul y 0
+add y w
+add y 15  # y = i11+15
+mul y x
+add z y   # z = z11 = 26z10+i11+15
+inp w     # w = i12 ###############################
+mul x 0
+add x z
+mod x 26  # x = i11+15
+div z 26  # z = z10
+add x -15 # x = i11
+eql x w   # x = i11 == i12 ? 1 : 0 # c12 = i11 == i12
+eql x 0   # x = i11 == i12 ? 0 : 1
+mul y 0
+add y 25
+mul y x   # y = i11 == i12 ? 0 : 25
+add y 1   # y = i11 == i12 ? 1 : 26
+mul z y   # z = i11 == i12 ? z10 : 26z10
+mul y 0
+add y w
+add y 9   # y = i12+9
+mul y x   # y = i11 == i12 ? 0 : i12+9
+add z y   # z = z12 = i11 == i12 ? z10 : 26z10+i12+9
+inp w     # w = i13 ###############################
+mul x 0
+add x z
+mod x 26  # x = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? i6+6 : i8+15 ) : i10+12 ) : i12+9
+div z 26  # z = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? z5 : z6 ) : z8 ) : z10
+add x -9  # x = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? i6-3 : i8+6 ) : i10+3 ) : i12
+eql x w   # x = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? ( i6-3 == i13 ? 1 : 0) : ( i8+6 == i13 ? 1 : 0 ) ) : ( i10+3 == i13 ? 1 : 0 ) ) : ( i12 == i13 ? 1 : 0 )
+eql x 0   # x = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? ( i6-3 == i13 ? 0 : 1) : ( i8+6 == i13 ? 0 : 1 ) ) : ( i10+3 == i13 ? 0 : 1 ) ) : ( i12 == i13 ? 0 : 1 )
+mul y 0
+add y 25
+mul y x   # y = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? ( i6-3 == i13 ? 0 : 25) : ( i8+6 == i13 ? 0 : 25 ) ) : ( i10+3 == i13 ? 0 : 25 ) ) : ( i12 == i13 ? 0 : 25 )
+add y 1   # y = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? ( i6-3 == i13 ? 1 : 26) : ( i8+6 == i13 ? 1 : 26 ) ) : ( i10+3 == i13 ? 1 : 26 ) ) : ( i12 == i13 ? 1 : 26 )
+mul z y   # z = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? ( i6-3 == i13 ? z5 : 26z5) : ( i8+6 == i13 ? z6 : 26z6 ) ) : ( i10+3 == i13 ? z8 : 26z8 ) ) : ( i12 == i13 ? z10 : 26z10 )
+mul y 0
+add y w
+add y 12  # y = i13+12
+mul y x   # y = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? ( i6-3 == i13 ? 0 : i13+12) : ( i8+6 == i13 ? 0 : i13+12 ) ) : ( i10+3 == i13 ? 0 : i13+12 ) ) : ( i12 == i13 ? 0 : i13+12 )
+add z y   # z = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? ( i6-3 == i13 ? z5 : 26z5+i13+12) : ( i8+6 == i13 ? z6 : 26z6+i13+12 ) ) : ( i10+3 == i13 ? z8 : 26z8+i13+12 ) ) : ( i12 == i13 ? z10 : 26z10+i13+12 )
+inp w     # w = i14 ###############################
+mul x 0
+add x z
+mod x 26  # x = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? ( i6-3 == i13 ? ( i3-7 == i4 ? ( i2-5 == i5 ? i1+9 : i5+1 ) : ( i4-4 == i5 ? i2+4 : i5+1 ) ) : i13+12) : ( i8+6 == i13 ? i6+6 : i13+12 ) ) : ( i10+3 == i13 ? ( i7+1 == i8 ? i6+6 : i8+15 ) : i13+12 ) ) : ( i12 == i13 ? ( i9+5 == i10 ? ( i7+1 == i8 ? i6+6 : i8+15 ) : i10+12 ) : i13+12 )
+div z 26  # z = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? ( i6-3 == i13 ? ( i3-7 == i4 ? ( i2-5 == i5 ? 0 : z1 ) : ( i4-4 == i5 ? z1 : z2 ) ) : z5) : ( i8+6 == i13 ? z5 : z6 ) ) : ( i10+3 == i13 ? ( i7+1 == i8 ? z5 : z6 ) : z8 ) ) : ( i12 == i13 ? ( i9+5 == i10 ? ( i7+1 == i8 ? z5 : z6 ) : z8 ) : z10 )
+add x -3  # x = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? ( i6-3 == i13 ? ( i3-7 == i4 ? ( i2-5 == i5 ? i1+6 : i5-2 ) : ( i4-4 == i5 ? i2+1 : i5-2 ) ) : i13+9) : ( i8+6 == i13 ? i6+3 : i13+9 ) ) : ( i10+3 == i13 ? ( i7+1 == i8 ? i6+3 : i8+12 ) : i13+9 ) ) : ( i12 == i13 ? ( i9+5 == i10 ? ( i7+1 == i8 ? i6+3 : i8+12 ) : i10+9 ) : i13+9 )
+eql x w   # x = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? ( i6-3 == i13 ? ( i3-7 == i4 ? ( i2-5 == i5 ? ( i1+6 == i14 ? 1 : 0 ) : ( i5-2 == i14 ? 1 : 0 ) ) : ( i4-4 == i5 ? ( i2+1 == i14 ? 1 : 0 ) : ( i5-2 == i14 ? 1 : 0 ) ) ) : ( i13+9 == i14 ? 1 : 0 ) ) : ( i8+6 == i13 ? ( i6+3 == i14 ? 1 : 0 ) : ( i13+9 == i14 ? 1 : 0 ) ) ) : ( i10+3 == i13 ? ( i7+1 == i8 ? ( i6+3 == i14 ? 1 : 0 ) : ( i8+12 == i14 ? 1 : 0 ) ) : ( i13+9 == i14 ? 1 : 0 ) ) ) : ( i12 == i13 ? ( i9+5 == i10 ? ( i7+1 == i8 ? ( i6+3 == i14 ? 1 : 0 ) : ( i8+12 == i14 ? 1 : 0 ) ) : ( i10+9 == i14 ? 1 : 0 ) ) : ( i13+9 == i14 ? 1 : 0 ) )
+eql x 0   # x = i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? ( i6-3 == i13 ? ( i3-7 == i4 ? ( i2-5 == i5 ? ( i1+6 == i14 ? 0 : 1 ) : ( i5-2 == i14 ? 0 : 1 ) ) : ( i4-4 == i5 ? ( i2+1 == i14 ? 0 : 1 ) : ( i5-2 == i14 ? 0 : 1 ) ) ) : ( i13+9 == i14 ? 0 : 1 ) ) : ( i8+6 == i13 ? ( i6+3 == i14 ? 0 : 1 ) : ( i13+9 == i14 ? 0 : 1 ) ) ) : ( i10+3 == i13 ? ( i7+1 == i8 ? ( i6+3 == i14 ? 0 : 1 ) : ( i8+12 == i14 ? 0 : 1 ) ) : ( i13+9 == i14 ? 0 : 1 ) ) ) : ( i12 == i13 ? ( i9+5 == i10 ? ( i7+1 == i8 ? ( i6+3 == i14 ? 0 : 1 ) : ( i8+12 == i14 ? 0 : 1 ) ) : ( i10+9 == i14 ? 0 : 1 ) ) : ( i13+9 == i14 ? 0 : 1 ) )
+mul y 0
+add y 25
+mul y x
+add y 1   # y = 26
+mul z y   # z = c13 == i13 ? 0 : 26( i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? z5 : z6 ) : z8 ) : z10 )
+mul y 0
+add y w
+add y 12  # y = i14+12
+mul y x
+add z y   # z = z14 = c13 == i13 ? i14+12 : 26( i11 == i12 ? ( i9+5 == i10 ? ( i7+1 == i8 ? z5 : z6 ) : z8 ) : z10 )+i14+12

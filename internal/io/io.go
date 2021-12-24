@@ -35,6 +35,16 @@ func ParseInts(line string, sep string) (numbers []int) {
 	return
 }
 
+// ReadFile reads all lines from a file.
+func ReadFile(path string) []string {
+	f, err := os.Open(path)
+	ReportError("failed to open file", err)
+	defer func() { _ = f.Close() }()
+	input, err := ioutil.ReadAll(f)
+	ReportError("failed to read file", err)
+	return strings.Split(strings.Trim(string(input), "\n"), "\n")
+}
+
 // ReadLines reads all lines from os.Stdin.
 func ReadLines() []string {
 	input, err := ioutil.ReadAll(os.Stdin)
