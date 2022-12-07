@@ -39,6 +39,13 @@ func ParseInt(s string) int {
 	return v
 }
 
+// ReadAll reads all input from os.Stdin.
+func ReadAll() string {
+	input, err := ioutil.ReadAll(os.Stdin)
+	ReportError("failed to read standard input", err)
+	return string(input)
+}
+
 // ReadFile reads all lines from a file.
 func ReadFile(path string) []string {
 	f, err := os.Open(path)
@@ -51,9 +58,7 @@ func ReadFile(path string) []string {
 
 // ReadLines reads all lines from os.Stdin.
 func ReadLines() []string {
-	input, err := ioutil.ReadAll(os.Stdin)
-	ReportError("failed to read standard input", err)
-	return strings.Split(strings.Trim(string(input), "\n"), "\n")
+	return strings.Split(strings.Trim(ReadAll(), "\n"), "\n")
 }
 
 // ReportError reports an error and exits the program.
