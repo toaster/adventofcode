@@ -25,14 +25,18 @@ func ParseInts(line string, sep string) (numbers []int) {
 			continue
 		}
 
-		v, err := strconv.Atoi(s)
-		if err != nil {
-			ReportError("failed to parse input", err)
-		}
-
-		numbers = append(numbers, v)
+		numbers = append(numbers, ParseInt(s))
 	}
 	return
+}
+
+// ParseInt parses and returns an integer.
+func ParseInt(s string) int {
+	v, err := strconv.Atoi(s)
+	if err != nil {
+		ReportError("failed to parse input", err)
+	}
+	return v
 }
 
 // ReadFile reads all lines from a file.
