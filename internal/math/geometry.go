@@ -253,6 +253,11 @@ func (p Point2D) AddXY(x, y int) Point2D {
 	return Point2D{p.X + x, p.Y + y}
 }
 
+// IsAdjacent returns whether the point is adjacent to the other (including diagonal).
+func (p Point2D) IsAdjacent(other Point2D) bool {
+	return other.X > p.X-2 && other.X < p.X+2 && other.Y > p.Y-2 && other.Y < p.Y+2
+}
+
 // IsGreaterThan returns whether any dimension of this point is greater than the respective dimension of the other point.
 func (p Point2D) IsGreaterThan(other Point2D) bool {
 	return p.X > other.X || p.Y > other.Y
@@ -261,6 +266,11 @@ func (p Point2D) IsGreaterThan(other Point2D) bool {
 // IsLessThan returns whether any dimension of this point is less than the respective dimension of the other point.
 func (p Point2D) IsLessThan(other Point2D) bool {
 	return p.X < other.X || p.Y < other.Y
+}
+
+// ManhattanDistance returns the Manhattan Distance of the point to the other point.
+func (p Point2D) ManhattanDistance(other Point2D) int {
+	return AbsInt(p.X-other.X) + AbsInt(p.Y-other.Y)
 }
 
 // Subtract subtracts another two-dimensional coordinate from this one.
