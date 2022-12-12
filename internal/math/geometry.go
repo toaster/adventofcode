@@ -273,6 +273,23 @@ func (p Point2D) ManhattanDistance(other Point2D) int {
 	return AbsInt(p.X-other.X) + AbsInt(p.Y-other.Y)
 }
 
+// Neighbours returns the neighbours (excluding diagonal) of the point. The area is limited by the x and y Range.
+func (p Point2D) Neighbours(x, y Range) (neighbours []Point2D) {
+	if p.X > x.Start {
+		neighbours = append(neighbours, p.AddXY(-1, 0))
+	}
+	if p.X < x.End {
+		neighbours = append(neighbours, p.AddXY(1, 0))
+	}
+	if p.Y > y.Start {
+		neighbours = append(neighbours, p.AddXY(0, -1))
+	}
+	if p.Y < y.End {
+		neighbours = append(neighbours, p.AddXY(0, 1))
+	}
+	return
+}
+
 // Subtract subtracts another two-dimensional coordinate from this one.
 // The result is the coordinate of this point relative to the other one.
 func (p Point2D) Subtract(other Point2D) Point2D {
