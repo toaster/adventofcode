@@ -314,6 +314,12 @@ func (p Point3D) Add(other Point3D) Point3D {
 	return Point3D{p.X + other.X, p.Y + other.Y, p.Z + other.Z}
 }
 
+// AddXYZ adds dimension values to this point.
+// This works like Add but saves the Point3D initialization if you only have the single dimensions at hand.
+func (p Point3D) AddXYZ(x, y, z int) Point3D {
+	return Point3D{p.X + x, p.Y + y, p.Z + z}
+}
+
 // IsGreaterThan returns whether any dimension of this point is greater than the respective dimension of the other point.
 func (p Point3D) IsGreaterThan(other Point3D) bool {
 	return p.X > other.X || p.Y > other.Y || p.Z > other.Z
@@ -322,6 +328,29 @@ func (p Point3D) IsGreaterThan(other Point3D) bool {
 // IsLessThan returns whether any dimension of this point is less than the respective dimension of the other point.
 func (p Point3D) IsLessThan(other Point3D) bool {
 	return p.X < other.X || p.Y < other.Y || p.Z < other.Z
+}
+
+// Neighbours returns the neighbours (excluding diagonal) of the point. The area is limited by the x, y and z Range.
+func (p Point3D) Neighbours(x, y, z Range) (neighbours []Point3D) {
+	if p.X > x.Start {
+		neighbours = append(neighbours, p.AddXYZ(-1, 0, 0))
+	}
+	if p.X < x.End {
+		neighbours = append(neighbours, p.AddXYZ(1, 0, 0))
+	}
+	if p.Y > y.Start {
+		neighbours = append(neighbours, p.AddXYZ(0, -1, 0))
+	}
+	if p.Y < y.End {
+		neighbours = append(neighbours, p.AddXYZ(0, 1, 0))
+	}
+	if p.Z > z.Start {
+		neighbours = append(neighbours, p.AddXYZ(0, 0, -1))
+	}
+	if p.Z < z.End {
+		neighbours = append(neighbours, p.AddXYZ(0, 0, 1))
+	}
+	return
 }
 
 // String returns a string representation of the point.
