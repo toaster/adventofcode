@@ -253,6 +253,19 @@ func (p Point2D) AddXY(x, y int) Point2D {
 	return Point2D{p.X + x, p.Y + y}
 }
 
+// Adjacents returns the adjacent positions (including diagonal) of the point.
+func (p Point2D) Adjacents() (adjacents []Point2D) {
+	adjacents = append(adjacents, p.AddXY(-1, -1))
+	adjacents = append(adjacents, p.AddXY(0, -1))
+	adjacents = append(adjacents, p.AddXY(1, -1))
+	adjacents = append(adjacents, p.AddXY(-1, 0))
+	adjacents = append(adjacents, p.AddXY(1, 0))
+	adjacents = append(adjacents, p.AddXY(-1, 1))
+	adjacents = append(adjacents, p.AddXY(0, 1))
+	adjacents = append(adjacents, p.AddXY(1, 1))
+	return
+}
+
 // IsAdjacent returns whether the point is adjacent to the other (including diagonal).
 func (p Point2D) IsAdjacent(other Point2D) bool {
 	return other.X > p.X-2 && other.X < p.X+2 && other.Y > p.Y-2 && other.Y < p.Y+2
