@@ -11,6 +11,11 @@ func (r *Range) AdjacentTo(other *Range) bool {
 	return r.Start == other.End+1 || other.Start == r.End+1
 }
 
+// Covers returns whether the Range covers the given value.
+func (r *Range) Covers(i int) bool {
+	return i >= r.Start && i <= r.End
+}
+
 // Includes returns whether the Range completely covers (includes) another Range.
 func (r *Range) Includes(other *Range) bool {
 	return r.Start <= other.Start && r.End >= other.End
