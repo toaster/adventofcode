@@ -1,6 +1,6 @@
 module github.com/toaster/advent_of_code
 
-go 1.18
+go 1.21
 
 require (
 	github.com/stretchr/testify v1.4.0
