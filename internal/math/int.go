@@ -1,6 +1,9 @@
 package math
 
-import "sort"
+import (
+	"sort"
+	"strings"
+)
 
 // AbsInt compute the absolute value of an integer.
 func AbsInt(x int) int {
@@ -34,6 +37,37 @@ func ContainsInt(nums []int, num int) bool {
 func DetectDigit(c byte) (int, bool) {
 	if c >= '0' && c <= '9' {
 		return int(c - '0'), true
+	}
+	return 0, false
+}
+
+// DetectDigitString detects whether a string starts with a digit as number or as word and returns its value if so.
+func DetectDigitString(s string) (int, bool) {
+	c := s[0]
+	if c >= '0' && c <= '9' {
+		return int(c - '0'), true
+	}
+
+	if strings.HasPrefix(s, "zero") {
+		return 0, true
+	} else if strings.HasPrefix(s, "one") {
+		return 1, true
+	} else if strings.HasPrefix(s, "two") {
+		return 2, true
+	} else if strings.HasPrefix(s, "three") {
+		return 3, true
+	} else if strings.HasPrefix(s, "four") {
+		return 4, true
+	} else if strings.HasPrefix(s, "five") {
+		return 5, true
+	} else if strings.HasPrefix(s, "six") {
+		return 6, true
+	} else if strings.HasPrefix(s, "seven") {
+		return 7, true
+	} else if strings.HasPrefix(s, "eight") {
+		return 8, true
+	} else if strings.HasPrefix(s, "nine") {
+		return 9, true
 	}
 	return 0, false
 }
