@@ -30,6 +30,14 @@ func ContainsInt(nums []int, num int) bool {
 	return false
 }
 
+// DetectDigit checks whether a byte shows a digit and returns its value if so.
+func DetectDigit(c byte) (int, bool) {
+	if c >= '0' && c <= '9' {
+		return int(c - '0'), true
+	}
+	return 0, false
+}
+
 // MaxInt returns the maximum of two integers.
 func MaxInt(a, b int) int {
 	if a < b {
