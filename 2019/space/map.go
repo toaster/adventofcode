@@ -16,12 +16,6 @@ type Map struct {
 	lcm       int
 }
 
-// Point represents a point, probably on a map ;).
-type Point struct {
-	X int
-	Y int
-}
-
 // ParseMap creates a Map out of an input string.
 func ParseMap(input string) *Map {
 	m := Map{}
@@ -47,34 +41,34 @@ func ParseMap(input string) *Map {
 }
 
 // MaxVisibleAsteroids computes the maximum amount of other asteroids visible from an asteroid.
-func (m *Map) MaxVisibleAsteroids() (int, Point) {
-	max := 0
-	maxP := Point{}
+func (m *Map) MaxVisibleAsteroids() (int, math.Point2D) {
+	mx := 0
+	maxP := math.Point2D{}
 	for y := 0; y < m.height; y++ {
 		for x := 0; x < m.width; x++ {
 			if !m.asteroids[y][x] {
 				continue
 			}
 			angles := m.scan(x, y)
-			if len(angles) > max {
-				max = len(angles)
-				maxP = Point{x, y}
+			if len(angles) > mx {
+				mx = len(angles)
+				maxP = math.Point2D{X: x, Y: y}
 			}
 		}
 	}
-	return max, maxP
+	return mx, maxP
 }
 
 // VaporizeAsteroids turns the giant laser at pos and vaporizes all asteroids. It returns the coordinates
 // of the vaporized asteroids in order.
-func (m *Map) VaporizeAsteroids(pos Point) []Point {
+func (m *Map) VaporizeAsteroids(pos math.Point2D) []math.Point2D {
 	asteroids := m.scan(pos.X, pos.Y)
 	rays := sortableRays{}
 	for point, asteroids := range asteroids {
 		rays = append(rays, ray{point, asteroids})
 	}
 	sort.Sort(rays)
-	var vaporized []Point
+	var vaporized []math.Point2D
 	for len(rays) > 0 {
 		newRays := rays[:0]
 		for _, ray := range rays {
@@ -90,8 +84,8 @@ func (m *Map) VaporizeAsteroids(pos Point) []Point {
 }
 
 type ray struct {
-	normPoint Point
-	asteroids []Point
+	normPoint math.Point2D
+	asteroids []math.Point2D
 }
 
 type sortableRays []ray
@@ -130,8 +124,8 @@ func (s sortableRays) Swap(i, j int) {
 	s[i], s[j] = s[j], s[i]
 }
 
-func (m *Map) scan(x int, y int) map[Point][]Point {
-	asteroids := map[Point][]Point{}
+func (m *Map) scan(x int, y int) map[math.Point2D][]math.Point2D {
+	asteroids := map[math.Point2D][]math.Point2D{}
 	for sy := 0; sy < m.height; sy++ {
 		for sx := 0; sx < m.width; sx++ {
 			if sx == x && sy == y {
@@ -140,19 +134,19 @@ func (m *Map) scan(x int, y int) map[Point][]Point {
 			if m.asteroids[sy][sx] {
 				dx := sx - x
 				dy := sy - y
-				var np Point
+				var np math.Point2D
 				if dx == 0 {
-					np = Point{X: dx, Y: dy / math.AbsInt(dy)}
+					np = math.Point2D{X: dx, Y: dy / math.AbsInt(dy)}
 				} else {
 					f := m.lcm / math.AbsInt(dx)
-					np = Point{X: f * dx, Y: f * dy}
+					np = math.Point2D{X: f * dx, Y: f * dy}
 				}
 				if len(asteroids[np]) == 0 {
-					asteroids[np] = []Point{{sx, sy}}
+					asteroids[np] = []math.Point2D{{X: sx, Y: sy}}
 				} else if math.AbsInt(asteroids[np][0].X-x) < math.AbsInt(dx) {
-					asteroids[np] = append(asteroids[np], Point{sx, sy})
+					asteroids[np] = append(asteroids[np], math.Point2D{X: sx, Y: sy})
 				} else {
-					asteroids[np] = append([]Point{{sx, sy}}, asteroids[np]...)
+					asteroids[np] = append([]math.Point2D{{X: sx, Y: sy}}, asteroids[np]...)
 				}
 			}
 		}

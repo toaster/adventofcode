@@ -7,13 +7,14 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/toaster/advent_of_code/2019/space"
+	"github.com/toaster/advent_of_code/internal/math"
 )
 
 func TestMap_MaxVisibleAsteroids(t *testing.T) {
 	tests := map[string]struct {
 		input     []string
 		wantMax   int
-		wantPoint space.Point
+		wantPoint math.Point2D
 	}{
 		"example 1": {
 			input: []string{
@@ -24,7 +25,7 @@ func TestMap_MaxVisibleAsteroids(t *testing.T) {
 				"...##",
 			},
 			wantMax:   8,
-			wantPoint: space.Point{X: 3, Y: 4},
+			wantPoint: math.Point2D{X: 3, Y: 4},
 		},
 		"example 2": {
 			input: []string{
@@ -40,7 +41,7 @@ func TestMap_MaxVisibleAsteroids(t *testing.T) {
 				".#....####",
 			},
 			wantMax:   33,
-			wantPoint: space.Point{X: 5, Y: 8},
+			wantPoint: math.Point2D{X: 5, Y: 8},
 		},
 		"example 3": {
 			input: []string{
@@ -56,7 +57,7 @@ func TestMap_MaxVisibleAsteroids(t *testing.T) {
 				".####.###.",
 			},
 			wantMax:   35,
-			wantPoint: space.Point{X: 1, Y: 2},
+			wantPoint: math.Point2D{X: 1, Y: 2},
 		},
 		"example 4": {
 			input: []string{
@@ -72,7 +73,7 @@ func TestMap_MaxVisibleAsteroids(t *testing.T) {
 				".....#.#..",
 			},
 			wantMax:   41,
-			wantPoint: space.Point{X: 6, Y: 3},
+			wantPoint: math.Point2D{X: 6, Y: 3},
 		},
 		"example 5": {
 			input: []string{
@@ -98,7 +99,7 @@ func TestMap_MaxVisibleAsteroids(t *testing.T) {
 				"###.##.####.##.#..##",
 			},
 			wantMax:   210,
-			wantPoint: space.Point{X: 11, Y: 13},
+			wantPoint: math.Point2D{X: 11, Y: 13},
 		},
 	}
 	for name, tt := range tests {
@@ -114,8 +115,8 @@ func TestMap_MaxVisibleAsteroids(t *testing.T) {
 func TestMap_VaporizeAsteroids(t *testing.T) {
 	tests := map[string]struct {
 		input []string
-		pos   space.Point
-		want  []space.Point
+		pos   math.Point2D
+		want  []math.Point2D
 	}{
 		"example 1": {
 			input: []string{
@@ -125,8 +126,8 @@ func TestMap_VaporizeAsteroids(t *testing.T) {
 				"..#.....X...###..",
 				"..#.#.....#....##",
 			},
-			pos: space.Point{X: 8, Y: 3},
-			want: []space.Point{
+			pos: math.Point2D{X: 8, Y: 3},
+			want: []math.Point2D{
 				{8, 1},
 				{9, 0},
 				{9, 1},

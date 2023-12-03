@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/toaster/advent_of_code/2019/icc"
-	"github.com/toaster/advent_of_code/2019/space"
+	"github.com/toaster/advent_of_code/internal/math"
 )
 
 func main() {
@@ -27,31 +27,31 @@ func main() {
 	c.Run()
 
 	var width, height int
-	plan := map[space.Point]rune{}
+	plan := map[math.Point2D]rune{}
 	for y, line := range strings.Split(strings.TrimSpace(raw.String()), "\n") {
 		width = len(line)
 		height = y + 1
 		for x, p := range line {
-			plan[space.Point{X: x, Y: y}] = p
+			plan[math.Point2D{X: x, Y: y}] = p
 		}
 	}
 
 	alignments := 0
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
-			if plan[space.Point{X: x, Y: y}] != '#' {
+			if plan[math.Point2D{X: x, Y: y}] != '#' {
 				continue
 			}
-			if x > 0 && plan[space.Point{X: x - 1, Y: y}] != '#' {
+			if x > 0 && plan[math.Point2D{X: x - 1, Y: y}] != '#' {
 				continue
 			}
-			if x < width-1 && plan[space.Point{X: x + 1, Y: y}] != '#' {
+			if x < width-1 && plan[math.Point2D{X: x + 1, Y: y}] != '#' {
 				continue
 			}
-			if y > 0 && plan[space.Point{X: x, Y: y - 1}] != '#' {
+			if y > 0 && plan[math.Point2D{X: x, Y: y - 1}] != '#' {
 				continue
 			}
-			if y < height-1 && plan[space.Point{X: x, Y: y + 1}] != '#' {
+			if y < height-1 && plan[math.Point2D{X: x, Y: y + 1}] != '#' {
 				continue
 			}
 			alignments += x * y

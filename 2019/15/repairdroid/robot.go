@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/toaster/advent_of_code/2019/icc"
-	"github.com/toaster/advent_of_code/2019/space"
+	"github.com/toaster/advent_of_code/internal/math"
 )
 
 // Explore takes an ICC program, starts a robot with it and returns it after it has explored the map.
@@ -12,7 +12,7 @@ func Explore(program []int) *Robot {
 	in := make(chan int)
 	out := make(chan int)
 	start := &node{typ: floor}
-	r := &Robot{map[space.Point]*node{start.pos: start}, start, start, nil, in, out}
+	r := &Robot{map[math.Point2D]*node{start.pos: start}, start, start, nil, in, out}
 	c := icc.New(in, out)
 	c.Load(program)
 	go c.Run()
@@ -49,7 +49,7 @@ const (
 )
 
 type node struct {
-	pos      space.Point
+	pos      math.Point2D
 	typ      tile
 	children [5]*node
 	parent   int
@@ -70,7 +70,7 @@ const (
 
 // Robot is a repair droid.
 type Robot struct {
-	Plan  map[space.Point]*node
+	Plan  map[math.Point2D]*node
 	start *node
 	cur   *node
 	oxy   *node
@@ -98,7 +98,7 @@ func (r *Robot) PrintMap() {
 	}
 	for y := minY; y <= maxY; y++ {
 		for x := minX; x <= maxX; x++ {
-			p := space.Point{X: x, Y: y}
+			p := math.Point2D{X: x, Y: y}
 			if p == r.cur.pos {
 				fmt.Print(droid)
 			} else {
@@ -128,18 +128,18 @@ func (r *Robot) FillWithOxygen() int {
 }
 
 func (r *Robot) fill(n *node) int {
-	max := n.oxyDist
+	mx := n.oxyDist
 	for _, child := range n.children {
 		if child == nil || child.oxyDist > -1 || child.typ == wall {
 			continue
 		}
 		child.oxyDist = n.oxyDist + 1
 		t := r.fill(child)
-		if t > max {
-			max = t
+		if t > mx {
+			mx = t
 		}
 	}
-	return max
+	return mx
 }
 
 func (r *Robot) tryMove(dir int) {
