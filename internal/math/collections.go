@@ -53,6 +53,26 @@ func CommonElement3[T constraints.Ordered](a, b, c []T) *T {
 	return nil
 }
 
+// Contains returns whether a slice contains a specific element.
+func Contains[T comparable](nums []T, num T) bool {
+	for _, n := range nums {
+		if n == num {
+			return true
+		}
+	}
+	return false
+}
+
+// Intersection returns the intersection of two slices.
+func Intersection[T comparable](a, b []T) (result []T) {
+	for _, e := range a {
+		if Contains(b, e) {
+			result = append(result, e)
+		}
+	}
+	return result
+}
+
 // Sort sorts a slice.
 func Sort[T constraints.Ordered](input []T) []T {
 	sorted := copySlice(input)
