@@ -1,6 +1,7 @@
 package math
 
 import (
+	"slices"
 	"sort"
 
 	"golang.org/x/exp/constraints"
@@ -78,6 +79,19 @@ func Sort[T constraints.Ordered](input []T) []T {
 	sorted := copySlice(input)
 	sort.Slice(sorted, func(i, j int) bool {
 		return sorted[i] < sorted[j]
+	})
+	return sorted
+}
+
+// SortRanges sorts a slice of ranges.
+func SortRanges(input []*Range) []*Range {
+	sorted := copySlice(input)
+	slices.SortFunc(sorted, func(a, b *Range) int {
+		if a.Start < b.Start {
+			return -1
+		}
+
+		return 1
 	})
 	return sorted
 }
