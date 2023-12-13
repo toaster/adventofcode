@@ -1,6 +1,7 @@
 package math
 
 import (
+	"math"
 	"sort"
 	"strings"
 )
@@ -21,6 +22,26 @@ func AverageInt(nums []int) int {
 		sum += num
 	}
 	return sum / count
+}
+
+// CountSetBits returns the number of set bits in the input.
+func CountSetBits(num int) int {
+	if num == 0 {
+		return 0
+	}
+
+	k := 0
+	for i := float64(0); int(math.Pow(2, i)) <= num; i++ {
+		k++
+	}
+
+	count := 0
+	for i := float64(k); i >= 0; i-- {
+		if int(math.Pow(2, i))&num > 0 {
+			count++
+		}
+	}
+	return count
 }
 
 // DetectDigit checks whether a byte shows a digit and returns its value if so.
