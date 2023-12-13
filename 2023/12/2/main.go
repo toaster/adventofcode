@@ -15,8 +15,8 @@ func main() {
 	for _, line := range io.ReadLines() {
 		conditionRecordsAndDamagedCounts := strings.Split(line, " ")
 		damagedCounts := io.ParseInts(conditionRecordsAndDamagedCounts[1], ",")
-		sum += countPossibleArrangements(conditionRecordsAndDamagedCounts[0], damagedCounts)
-		//  computePossibleFoldedArrangements(conditionRecordsAndDamagedCounts[0], damagedCounts, )
+		// sum += countPossibleArrangements(conditionRecordsAndDamagedCounts[0], damagedCounts)
+		sum += countPossibleFoldedArrangements(conditionRecordsAndDamagedCounts[0], damagedCounts)
 	}
 	fmt.Println(sum)
 }

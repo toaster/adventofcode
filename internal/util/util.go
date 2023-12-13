@@ -9,6 +9,13 @@ func CopyMap[K comparable, V any](value map[K]V) map[K]V {
 	return newValue
 }
 
+// CopySlice copies a slice.
+func CopySlice[T any](slice []T) []T {
+	newSlice := make([]T, len(slice))
+	copy(newSlice, slice)
+	return newSlice
+}
+
 // CopyMapExcept copies a map except a certain key.
 func CopyMapExcept[K comparable, V any](value map[K]V, key K) map[K]V {
 	newValue := map[K]V{}
