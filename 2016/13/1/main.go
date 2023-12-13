@@ -1,0 +1,41 @@
+package main
+
+import (
+	"fmt"
+	math2 "math"
+
+	"github.com/toaster/advent_of_code/internal/io"
+	"github.com/toaster/advent_of_code/internal/math"
+)
+
+func main() {
+	input := io.ReadLines()
+	favouriteNumber := io.ParseInt(input[0])
+	start := parsePoint(input[1])
+	end := parsePoint(input[2])
+	isOpenSpace := func(p math.Point2D) bool {
+		x := p.X
+		y := p.Y
+		if x < 0 || y < 0 {
+			return false
+		}
+
+		return math.CountSetBits(x*x+3*x+2*x*y+y+y*y+favouriteNumber)%2 == 0
+	}
+	wholeMap := math.Range{End: math2.MaxInt}
+	adjacents := func(p math.Point2D) []math.Point2D {
+		var adjacents []math.Point2D
+		for _, n := range p.Neighbours(wholeMap, wholeMap) {
+			if isOpenSpace(n) {
+				adjacents = append(adjacents, n)
+			}
+		}
+		return adjacents
+	}
+	fmt.Println(math.FindShortestDistance(adjacents, start, end))
+}
+
+func parsePoint(input string) math.Point2D {
+	startCoordinates := io.ParseInts(input, ",")
+	return math.Point2D{X: startCoordinates[0], Y: startCoordinates[1]}
+}

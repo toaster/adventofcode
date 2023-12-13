@@ -63,6 +63,52 @@ func ComputeShortestPath(start *Node, end *Node) ([]*Node, int) {
 	return nil, shortest.length
 }
 
+// CountPossibleDestinations is a broad-first implementation to search for all reachable nodes within a given distance in an unweighted graph.
+func CountPossibleDestinations[T comparable](adjacents func(T) []T, start T, maxDistance int) int {
+	visited := map[T]bool{start: true}
+	next := []T{start}
+	distance := 0
+	for {
+		cur := next
+		next = nil
+		for _, pos := range cur {
+			visited[pos] = true
+			for _, node := range adjacents(pos) {
+				if !visited[node] {
+					next = append(next, node)
+				}
+			}
+		}
+		distance++
+		if distance > maxDistance {
+			return len(visited)
+		}
+	}
+}
+
+// FindShortestDistance is a broad-first implementation to search for the shortest path in an unweighted graph.
+func FindShortestDistance[T comparable](adjacents func(T) []T, start, end T) int {
+	visited := map[T]bool{start: true}
+	next := []T{start}
+	distance := 0
+	for {
+		cur := next
+		next = nil
+		distance++
+		for _, pos := range cur {
+			for _, node := range adjacents(pos) {
+				if node == end {
+					return distance
+				}
+				if !visited[node] {
+					next = append(next, node)
+				}
+				visited[node] = true
+			}
+		}
+	}
+}
+
 func shortestDepthFirstPath(startPath *depthFirstPath, end *Node) (shortestPath *depthFirstPath) {
 	var paths []*depthFirstPath
 	for _, edge := range startPath.steps[len(startPath.steps)-1].Edges {
