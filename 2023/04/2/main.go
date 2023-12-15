@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/toaster/advent_of_code/internal/io"
-	"github.com/toaster/advent_of_code/internal/math"
+	"github.com/toaster/advent_of_code/internal/util"
 )
 
 func main() {
@@ -21,7 +21,7 @@ func main() {
 	}
 	sum := 0
 	for i := 0; i < len(wins); i++ {
-		common := math.Intersection(nums[i], wins[i])
+		common := util.Intersection(nums[i], wins[i])
 		count := len(common)
 		fmt.Printf("Card %d wins %d (%d - %d)\n", i+1, count, i+1+1, i+1+1+count)
 		for j := i + 1; j < len(cards) && j < i+1+count; j++ {

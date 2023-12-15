@@ -6,6 +6,7 @@ import (
 	"github.com/toaster/advent_of_code/2022/11/monkey"
 	"github.com/toaster/advent_of_code/internal/io"
 	"github.com/toaster/advent_of_code/internal/math"
+	"github.com/toaster/advent_of_code/internal/util"
 )
 
 func main() {
@@ -22,6 +23,6 @@ func main() {
 	for _, m := range monkeys {
 		inspectionCounts = append(inspectionCounts, m.InspectionCount)
 	}
-	inspectionCounts = math.Sort(inspectionCounts)
+	inspectionCounts = util.Sort(inspectionCounts)
 	fmt.Println(inspectionCounts[len(inspectionCounts)-1] * inspectionCounts[len(inspectionCounts)-2])
 }

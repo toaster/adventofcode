@@ -5,6 +5,7 @@ import (
 	"slices"
 
 	"github.com/toaster/advent_of_code/internal/math"
+	"github.com/toaster/advent_of_code/internal/util"
 )
 
 // Parse parses the observed universe.
@@ -52,7 +53,7 @@ func (u *Universe) Expand(factor int) {
 
 	var rowsWithGalaxies []int
 	for p := range u.galaxies {
-		if !math.Contains(rowsWithGalaxies, p.Y) {
+		if !util.Contains(rowsWithGalaxies, p.Y) {
 			rowsWithGalaxies = append(rowsWithGalaxies, p.Y)
 		}
 	}
@@ -60,7 +61,7 @@ func (u *Universe) Expand(factor int) {
 
 	var columnsWithGalaxies []int
 	for p := range u.galaxies {
-		if !math.Contains(columnsWithGalaxies, p.X) {
+		if !util.Contains(columnsWithGalaxies, p.X) {
 			columnsWithGalaxies = append(columnsWithGalaxies, p.X)
 		}
 	}

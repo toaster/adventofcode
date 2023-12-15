@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/toaster/advent_of_code/internal/io"
-	"github.com/toaster/advent_of_code/internal/math"
+	"github.com/toaster/advent_of_code/internal/util"
 )
 
 type group struct {
@@ -26,7 +26,7 @@ func main() {
 
 	sum := 0
 	for _, g := range groups {
-		common := math.CommonElement3(g.a, g.b, g.c)
+		common := util.CommonElement3(g.a, g.b, g.c)
 		if common == nil {
 			panic("unexpectedly no common element")
 		}

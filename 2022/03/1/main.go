@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/toaster/advent_of_code/internal/io"
-	"github.com/toaster/advent_of_code/internal/math"
+	"github.com/toaster/advent_of_code/internal/util"
 )
 
 type rucksack struct {
@@ -24,7 +24,7 @@ func main() {
 
 	sum := 0
 	for _, sack := range sacks {
-		common := math.CommonElement2(sack.compartment1, sack.compartment2)
+		common := util.CommonElement2(sack.compartment1, sack.compartment2)
 		if common == nil {
 			panic("unexpectedly no common element")
 		}
