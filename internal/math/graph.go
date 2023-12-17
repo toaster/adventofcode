@@ -1,5 +1,7 @@
 package math
 
+import "fmt"
+
 // Edge is an edge of a weighted undirected graph connecting two Nodes.
 type Edge struct {
 	Weight int
@@ -88,24 +90,36 @@ func CountPossibleDestinations[T comparable](adjacents func(T) []T, start T, max
 
 // FindShortestDistance is a broad-first implementation to search for the shortest path in an unweighted graph.
 func FindShortestDistance[T comparable](adjacents func(T) []T, start, end T) int {
+	return FindShortestWeightedDistance(adjacents, func(_, _ T) int { return 1 }, func(p T) bool { return p == end }, start)
+}
+
+// FindShortestWeightedDistance is a broad-first implementation to search for the shortest path in a weighted graph.
+func FindShortestWeightedDistance[T comparable](adjacents func(T) []T, weight func(T, T) int, isEnd func(T) bool, start T) int {
 	visited := map[T]bool{start: true}
-	next := []T{start}
+	candidates := map[int][]T{0: {start}}
 	distance := 0
+	maxDistance := 0
 	for {
-		cur := next
-		next = nil
-		distance++
-		for _, pos := range cur {
+		if distance > maxDistance {
+			fmt.Printf("unexpected end\n")
+			return -1
+		}
+		for _, pos := range candidates[distance] {
+			if isEnd(pos) {
+				return distance
+			}
 			for _, node := range adjacents(pos) {
-				if node == end {
-					return distance
-				}
 				if !visited[node] {
-					next = append(next, node)
+					d := distance + weight(pos, node)
+					if d > maxDistance {
+						maxDistance = d
+					}
+					candidates[d] = append(candidates[d], node)
 				}
 				visited[node] = true
 			}
 		}
+		distance++
 	}
 }
 
