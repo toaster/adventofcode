@@ -18,6 +18,15 @@ func ParseBool(s string) bool {
 	return false
 }
 
+// ParseInt parses and returns an integer.
+func ParseInt(s string) int {
+	v, err := strconv.ParseInt(s, 0, 0)
+	if err != nil {
+		ReportError("failed to parse input", err)
+	}
+	return int(v)
+}
+
 // ParseInts parses and returns a sequence of integer separated by given separator.
 func ParseInts(line string, sep string) (numbers []int) {
 	for _, s := range strings.Split(line, sep) {
@@ -28,15 +37,6 @@ func ParseInts(line string, sep string) (numbers []int) {
 		numbers = append(numbers, ParseInt(s))
 	}
 	return
-}
-
-// ParseInt parses and returns an integer.
-func ParseInt(s string) int {
-	v, err := strconv.Atoi(s)
-	if err != nil {
-		ReportError("failed to parse input", err)
-	}
-	return v
 }
 
 // ReadAll reads all input from os.Stdin.

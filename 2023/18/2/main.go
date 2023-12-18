@@ -24,43 +24,43 @@ func main() {
 	var contour *math.LinkedLineSegment2D
 	var contourStart *math.LinkedLineSegment2D
 	side := 0
-	var lastDirection string
+	var lastDirection byte
 	for _, line := range io.ReadLines() {
 		components := strings.Split(line, " ")
-		d := components[0]
-		length := io.ParseInt(components[1])
+		length := io.ParseInt("0x" + components[2][2:7])
 		delta := math.Point2D{}
+		d := components[2][7]
 		switch d {
-		case "U": // up
+		case '3': // up
 			delta.Y = -length
-			if lastDirection == "R" {
+			if lastDirection == '0' {
 				side--
 			} else {
 				side++
 			}
-		case "D": // down
+		case '1': // down
 			delta.Y = length
-			if lastDirection == "R" {
+			if lastDirection == '0' {
 				side++
 			} else {
 				side--
 			}
-		case "R": // right
+		case '0': // right
 			delta.X = length
-			if lastDirection == "U" {
+			if lastDirection == '3' {
 				side++
 			} else {
 				side--
 			}
-		case "L": // left
+		case '2': // left
 			delta.X = -length
-			if lastDirection == "U" {
+			if lastDirection == '3' {
 				side--
 			} else {
 				side++
 			}
 		}
-		if lastDirection == "" {
+		if lastDirection == 0 {
 			side = 0
 		}
 		lastDirection = d
@@ -227,7 +227,6 @@ Next:
 			cur.B = cur.Next.A
 		}
 
-		fmt.Printf("==> %d\n", area)
 		return area, cur
 	}
 }

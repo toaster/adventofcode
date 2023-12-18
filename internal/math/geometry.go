@@ -236,6 +236,19 @@ func (c *Cuboid) nonIntersecting(other *Cuboid) []*Cuboid {
 	return cuboids
 }
 
+// LineSegment2D describes a two-dimensional line segment.
+type LineSegment2D struct {
+	A Point2D
+	B Point2D
+}
+
+// LinkedLineSegment2D is a linked LineSegment2D, i.e. usable for a linked list like a contour.
+type LinkedLineSegment2D struct {
+	LineSegment2D
+	Previous *LinkedLineSegment2D
+	Next     *LinkedLineSegment2D
+}
+
 // Point2D is a two-dimensional point.
 type Point2D struct {
 	X int
