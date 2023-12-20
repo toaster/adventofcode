@@ -21,6 +21,11 @@ func (r *Range) Includes(other *Range) bool {
 	return r.Start <= other.Start && r.End >= other.End
 }
 
+// Length returns the length of the range which is the amount of values it covers.
+func (r *Range) Length() int {
+	return r.End - r.Start + 1
+}
+
 // Merge merges the Range with another one if possible and returns the new Range as well as whether the operation was performed.
 func (r *Range) Merge(other *Range) (*Range, bool) {
 	if !r.Overlaps(other) && !r.AdjacentTo(other) {
