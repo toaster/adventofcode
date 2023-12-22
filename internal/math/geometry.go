@@ -3,6 +3,7 @@ package math
 import (
 	"fmt"
 	"sort"
+	"strings"
 
 	"github.com/toaster/advent_of_code/internal/io"
 )
@@ -10,6 +11,24 @@ import (
 // OrientationCount3D is the number of distinct orientations of a three-dimensional object which can
 // rotate around each axis in 90° steps.
 const OrientationCount3D = 24
+
+// ParseCuboid parses a Cuboid from a set of coordinates separated by the given separator with the
+// single dimensions separated by commas.
+func ParseCuboid(input string, separator string) *Cuboid {
+	edges := strings.Split(input, separator)
+	a := ParsePoint3D(edges[0], ",")
+	b := ParsePoint3D(edges[1], ",")
+	if a.IsGreaterThan(b) {
+		a, b = b, a
+	}
+	return &Cuboid{FrontBottomLeft: a, BackTopRight: b}
+}
+
+// ParsePoint3D parses a Point3D from a set of values separated by the given separator.
+func ParsePoint3D(input string, separator string) Point3D {
+	values := io.ParseInts(input, separator)
+	return Point3D{X: values[0], Y: values[1], Z: values[2]}
+}
 
 // TransformOrientation transforms a three-dimensional coordinate according to one of the possible
 // three-dimensional orientations (see OrientationCount3D).
