@@ -123,6 +123,28 @@ func FindShortestWeightedDistance[T comparable](adjacents func(T) []T, weight fu
 	}
 }
 
+// PossibleDestinationsForExactDistance is a broad-first implementation to search for all reachable nodes for a given distance in an unweighted graph.
+// Nodes which are within shorter distance are not included unless there is a path to them with exactly the given distance.
+func PossibleDestinationsForExactDistance[T comparable](adjacents func(T) []T, start T, targetDistance int) map[T]bool {
+	next := map[T]bool{start: true}
+	distance := 0
+	for {
+		cur := next
+		if distance == targetDistance {
+			return cur
+		}
+
+		next = map[T]bool{}
+		for pos := range cur {
+			for _, node := range adjacents(pos) {
+				next[node] = true
+			}
+		}
+		distance++
+		fmt.Printf("\r%d", distance)
+	}
+}
+
 func shortestDepthFirstPath(startPath *depthFirstPath, end *Node) (shortestPath *depthFirstPath) {
 	var paths []*depthFirstPath
 	for _, edge := range startPath.steps[len(startPath.steps)-1].Edges {
