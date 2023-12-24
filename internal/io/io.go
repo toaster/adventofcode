@@ -20,7 +20,7 @@ func ParseBool(s string) bool {
 
 // ParseInt parses and returns an integer.
 func ParseInt(s string) int {
-	v, err := strconv.ParseInt(s, 0, 0)
+	v, err := strconv.ParseInt(strings.TrimSpace(s), 0, 0)
 	if err != nil {
 		ReportError("failed to parse input", err)
 	}
