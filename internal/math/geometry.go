@@ -2,6 +2,7 @@ package math
 
 import (
 	"fmt"
+	"math"
 	"sort"
 	"strings"
 
@@ -255,6 +256,75 @@ func (c *Cuboid) nonIntersecting(other *Cuboid) []*Cuboid {
 	return cuboids
 }
 
+// Line2D describes a two-dimensional line.
+type Line2D struct {
+	LineSegment2D
+	formulaComputed bool
+	incline         float64
+	y0              float64
+}
+
+// Crosses returns whether the line crosses another one in a specific rectangular area.
+func (l *Line2D) Crosses(other *Line2D, area *Rectangle2D) bool {
+	tlx := float64(area.TopLeft.X)
+	tly := float64(area.TopLeft.Y)
+	brx := float64(area.BottomRight.X)
+	bry := float64(area.BottomRight.Y)
+	crosses, crossX, crossY := l.crossPoint(other)
+	return crosses && crossX >= tlx && crossX <= brx && crossY >= tly && crossY <= bry
+}
+
+func (l *Line2D) computeFormula() {
+	if l.A.X == l.B.X {
+		if l.A.Y < l.B.Y {
+			l.incline = math.Inf(-1)
+		} else {
+			l.incline = math.Inf(1)
+		}
+		l.y0 = math.NaN()
+	} else {
+		l.incline = float64(l.B.Y-l.A.Y) / float64(l.B.X-l.A.X)
+		l.y0 = -(float64(l.A.X))*l.incline + float64(l.A.Y)
+	}
+	l.formulaComputed = true
+}
+
+func (l *Line2D) crossPoint(other *Line2D) (bool, float64, float64) {
+	if !l.formulaComputed {
+		l.computeFormula()
+	}
+
+	// parallel
+	if l.incline == other.incline {
+		return false, 0, 0
+	}
+
+	// crossing at x == 0
+	if l.y0 == other.y0 {
+		return true, 0, l.y0
+	}
+
+	var crossX float64
+	if math.IsInf(l.incline, 0) {
+		crossX = float64(l.A.X)
+	} else if math.IsInf(other.incline, 0) {
+		crossX = float64(other.A.X)
+	} else {
+		crossX = (other.y0 - l.y0) / (l.incline - other.incline)
+	}
+	return true, crossX, l.yAtX(crossX)
+}
+
+func (l *Line2D) yAtX(x float64) float64 {
+	if !l.formulaComputed {
+		l.computeFormula()
+	}
+	if math.IsInf(l.incline, 0) {
+		return math.NaN()
+	}
+	return l.incline*x + l.y0
+}
+
 // LineSegment2D describes a two-dimensional line segment.
 type LineSegment2D struct {
 	A Point2D
@@ -411,6 +481,47 @@ func (p Point3D) String() string {
 // The result is the coordinate of this point relative to the other one.
 func (p Point3D) Subtract(other Point3D) Point3D {
 	return Point3D{p.X - other.X, p.Y - other.Y, p.Z - other.Z}
+}
+
+// Ray2D represents a two-dimensional ray, i.e. a Line2D where point A is the starting point and the
+// ray goes into direction of point B.
+type Ray2D Line2D
+
+// Crosses returns whether the ray crosses another one in a specific rectangular area.
+func (r *Ray2D) Crosses(other *Ray2D, area *Rectangle2D) bool {
+	crosses, crossX, crossY := (*Line2D)(r).crossPoint((*Line2D)(other))
+	if !crosses {
+		return false
+	}
+
+	if crossX < float64(area.TopLeft.X) || crossX > float64(area.BottomRight.X) || crossY < float64(area.TopLeft.Y) || crossY > float64(area.BottomRight.Y) {
+		return false
+	}
+
+	return r.reaches(crossX, crossY) && other.reaches(crossX, crossY)
+}
+
+func (r *Ray2D) reaches(pX float64, pY float64) bool {
+	if r.B.X > r.A.X && pX > float64(r.A.X) {
+		return true
+	}
+	if r.B.Y > r.A.Y && pY > float64(r.A.Y) {
+		return true
+	}
+	if r.B.X < r.A.X && pX < float64(r.A.X) {
+		return true
+	}
+	if r.B.Y < r.A.Y && pY < float64(r.A.Y) {
+		return true
+	}
+
+	return false
+}
+
+// Rectangle2D describes a two-dimensional rectangle.
+type Rectangle2D struct {
+	TopLeft     Point2D
+	BottomRight Point2D
 }
 
 // Sortable3DPoints is a sortable slice of Point3D.
