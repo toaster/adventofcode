@@ -30,11 +30,10 @@ func main() {
 	}
 
 	distances := map[math.Point2D]int{start: 1}
-	xRange := math.Range{End: len(area[0]) - 1}
-	yRange := math.Range{End: len(area) - 1}
+	frame := math.Rectangle2D{TopLeft: math.Point2D{}, BottomRight: math.Point2D{len(area[0]) - 1, len(area) - 1}}
 	candidates := []math.Point2D{start}
 	for len(candidates) > 0 {
-		candidates = trace(candidates, xRange, yRange, distances, area)
+		candidates = trace(candidates, frame, distances, area)
 	}
 	// printDistances(distances, xRange, yRange)
 	fmt.Println(distances[end] - 1)
@@ -49,9 +48,9 @@ func printDistances(distances map[math.Point2D]int, xRange, yRange math.Range) {
 	}
 }
 
-func trace(candidates []math.Point2D, xRange math.Range, yRange math.Range, distances map[math.Point2D]int, area [][]int) (nextCandidates []math.Point2D) {
+func trace(candidates []math.Point2D, frame math.Rectangle2D, distances map[math.Point2D]int, area [][]int) (nextCandidates []math.Point2D) {
 	for _, candidate := range candidates {
-		for _, p := range candidate.Neighbours(xRange, yRange) {
+		for _, p := range candidate.Neighbours(frame) {
 			if distances[p] != 0 {
 				continue
 			}

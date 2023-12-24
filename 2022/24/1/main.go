@@ -14,6 +14,7 @@ func main() {
 	lines := io.ReadLines()
 	xWall := math.Range{Start: 0, End: len(lines[0]) - 1}
 	yWall := math.Range{Start: 0, End: len(lines) - 1}
+	area := math.Rectangle2D{TopLeft: math.Point2D{}, BottomRight: math.Point2D{X: xWall.End, Y: yWall.End}}
 	valley := map[math.Point2D]bool{}
 	var blizzards []*blizzard
 	for y, line := range lines {
@@ -63,7 +64,7 @@ func main() {
 			if !valley[p] {
 				next[p] = true
 			}
-			for _, n := range p.Neighbours(xWall, yWall) {
+			for _, n := range p.Neighbours(area) {
 				if n == exit {
 					fmt.Println(minutes)
 					return

@@ -21,10 +21,10 @@ func main() {
 
 		return math.CountSetBits(x*x+3*x+2*x*y+y+y*y+favouriteNumber)%2 == 0
 	}
-	wholeMap := math.Range{End: math2.MaxInt}
+	wholeMap := math.Rectangle2D{TopLeft: math.Point2D{}, BottomRight: math.Point2D{X: math2.MaxInt, Y: math2.MaxInt}}
 	adjacents := func(p math.Point2D) []math.Point2D {
 		var adjacents []math.Point2D
-		for _, n := range p.Neighbours(wholeMap, wholeMap) {
+		for _, n := range p.Neighbours(wholeMap) {
 			if isOpenSpace(n) {
 				adjacents = append(adjacents, n)
 			}

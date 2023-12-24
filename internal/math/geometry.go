@@ -388,23 +388,19 @@ func (p Point2D) ManhattanDistance(other Point2D) int {
 	return AbsInt(p.X-other.X) + AbsInt(p.Y-other.Y)
 }
 
-// Neighbours returns the neighbours (excluding diagonal) of the point. The area is limited by the x and y Range.
-func (p Point2D) Neighbours(x, y Range) (neighbours []Point2D) {
-	if y.Covers(p.Y) {
-		if p.X > x.Start {
-			neighbours = append(neighbours, p.AddXY(-1, 0))
-		}
-		if p.X < x.End {
-			neighbours = append(neighbours, p.AddXY(1, 0))
-		}
+// Neighbours returns the neighbours (excluding diagonal) of the point. The area is limited by the given Rectangle2D.
+func (p Point2D) Neighbours(area Rectangle2D) (neighbours []Point2D) {
+	if p.X > area.TopLeft.X {
+		neighbours = append(neighbours, p.AddXY(-1, 0))
 	}
-	if x.Covers(p.X) {
-		if p.Y > y.Start {
-			neighbours = append(neighbours, p.AddXY(0, -1))
-		}
-		if p.Y < y.End {
-			neighbours = append(neighbours, p.AddXY(0, 1))
-		}
+	if p.X < area.BottomRight.X {
+		neighbours = append(neighbours, p.AddXY(1, 0))
+	}
+	if p.Y > area.TopLeft.Y {
+		neighbours = append(neighbours, p.AddXY(0, -1))
+	}
+	if p.Y < area.BottomRight.Y {
+		neighbours = append(neighbours, p.AddXY(0, 1))
 	}
 	return
 }

@@ -95,6 +95,7 @@ func printValley(valley map[math.Point2D]bool, xRange, yRange math.Range) {
 }
 
 func wander(entry, exit math.Point2D, xWall, yWall math.Range, blizzards []*blizzard) (minutes int) {
+	area := math.Rectangle2D{TopLeft: math.Point2D{X: xWall.Start, Y: yWall.Start}, BottomRight: math.Point2D{X: xWall.End, Y: yWall.End}}
 	cur := map[math.Point2D]bool{entry: true}
 	xRange := math.Range{Start: xWall.Start + 1, End: xWall.End - 1}
 	yRange := math.Range{Start: yWall.Start + 1, End: yWall.End - 1}
@@ -106,7 +107,7 @@ func wander(entry, exit math.Point2D, xWall, yWall math.Range, blizzards []*bliz
 			if !valley[p] {
 				next[p] = true
 			}
-			for _, n := range p.Neighbours(xWall, yWall) {
+			for _, n := range p.Neighbours(area) {
 				if n == exit {
 					return
 				}
