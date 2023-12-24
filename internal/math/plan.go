@@ -1,14 +1,12 @@
-package util
+package math
 
 import (
 	"fmt"
-
-	"github.com/toaster/advent_of_code/internal/math"
 )
 
 // ParsePlan2D parses a Plan2D from the given input.
 func ParsePlan2D(lines []string, startMarker rune) *Plan2D {
-	plan := &Plan2D{blocked: map[math.Point2D]bool{}}
+	plan := &Plan2D{blocked: map[Point2D]bool{}}
 	for y, line := range lines {
 		plan.height++
 		if plan.width == 0 {
@@ -17,30 +15,30 @@ func ParsePlan2D(lines []string, startMarker rune) *Plan2D {
 		for x, c := range line {
 			switch c {
 			case startMarker:
-				plan.Start = math.Point2D{X: x, Y: y}
+				plan.Start = Point2D{X: x, Y: y}
 			case '#':
-				plan.blocked[math.Point2D{X: x, Y: y}] = true
+				plan.blocked[Point2D{X: x, Y: y}] = true
 			}
 		}
 	}
-	plan.rangeX = math.Range{End: plan.width - 1}
-	plan.rangeY = math.Range{End: plan.height - 1}
+	plan.rangeX = Range{End: plan.width - 1}
+	plan.rangeY = Range{End: plan.height - 1}
 	return plan
 }
 
 // Plan2D represents a two-dimensional area.
 type Plan2D struct {
-	Start math.Point2D
+	Start Point2D
 
-	blocked map[math.Point2D]bool
+	blocked map[Point2D]bool
 	height  int
-	rangeX  math.Range
-	rangeY  math.Range
+	rangeX  Range
+	rangeY  Range
 	width   int
 }
 
 // Neighbours returns the reachable neighbours of a given point on the plan.
-func (p *Plan2D) Neighbours(point math.Point2D) (neighbours []math.Point2D) {
+func (p *Plan2D) Neighbours(point Point2D) (neighbours []Point2D) {
 	if p.rangeY.Covers(point.Y) {
 		if point.X > p.rangeX.Start {
 			n := point.AddXY(-1, 0)
@@ -73,10 +71,10 @@ func (p *Plan2D) Neighbours(point math.Point2D) (neighbours []math.Point2D) {
 }
 
 // Print prints the plan on stdout.
-func (p *Plan2D) Print(isMarked map[math.Point2D]bool) {
+func (p *Plan2D) Print(isMarked map[Point2D]bool) {
 	for y := 0; y < p.height; y++ {
 		for x := 0; x < p.width; x++ {
-			pos := math.Point2D{X: x, Y: y}
+			pos := Point2D{X: x, Y: y}
 			if p.blocked[pos] {
 				fmt.Print("#")
 			} else if isMarked[pos] {
