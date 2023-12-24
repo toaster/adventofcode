@@ -445,24 +445,24 @@ func (p Point3D) IsLessThan(other Point3D) bool {
 	return p.X < other.X || p.Y < other.Y || p.Z < other.Z
 }
 
-// Neighbours returns the neighbours (excluding diagonal) of the point. The area is limited by the x, y and z Range.
-func (p Point3D) Neighbours(x, y, z Range) (neighbours []Point3D) {
-	if p.X > x.Start {
+// Neighbours returns the neighbours (excluding diagonal) of the point. The area is limited by the given Cuboid.
+func (p Point3D) Neighbours(area Cuboid) (neighbours []Point3D) {
+	if p.X > area.FrontBottomLeft.X {
 		neighbours = append(neighbours, p.AddXYZ(-1, 0, 0))
 	}
-	if p.X < x.End {
+	if p.X < area.BackTopRight.X {
 		neighbours = append(neighbours, p.AddXYZ(1, 0, 0))
 	}
-	if p.Y > y.Start {
+	if p.Y > area.FrontBottomLeft.Y {
 		neighbours = append(neighbours, p.AddXYZ(0, -1, 0))
 	}
-	if p.Y < y.End {
+	if p.Y < area.BackTopRight.Y {
 		neighbours = append(neighbours, p.AddXYZ(0, 1, 0))
 	}
-	if p.Z > z.Start {
+	if p.Z > area.FrontBottomLeft.Z {
 		neighbours = append(neighbours, p.AddXYZ(0, 0, -1))
 	}
-	if p.Z < z.End {
+	if p.Z < area.BackTopRight.Z {
 		neighbours = append(neighbours, p.AddXYZ(0, 0, 1))
 	}
 	return

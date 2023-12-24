@@ -14,10 +14,13 @@ func main() {
 		coords := io.ParseInts(line, ",")
 		points[aocmath.Point3D{X: coords[0], Y: coords[1], Z: coords[2]}] = true
 	}
-	r := aocmath.Range{Start: math.MinInt64, End: math.MaxInt64}
+	area := aocmath.Cuboid{
+		FrontBottomLeft: aocmath.Point3D{X: math.MinInt64, Y: math.MinInt64, Z: math.MinInt64},
+		BackTopRight:    aocmath.Point3D{X: math.MaxInt64, Y: math.MaxInt64, Z: math.MaxInt64},
+	}
 	surface := 0
 	for p := range points {
-		for _, n := range p.Neighbours(r, r, r) {
+		for _, n := range p.Neighbours(area) {
 			if !points[n] {
 				surface++
 			}

@@ -8,8 +8,6 @@ import (
 	aocmath "github.com/toaster/advent_of_code/internal/math"
 )
 
-var maxIntRange = aocmath.Range{Start: math.MinInt64, End: math.MaxInt64}
-
 func main() {
 	points := map[aocmath.Point3D]bool{}
 	max := aocmath.Point3D{X: math.MinInt64, Y: math.MinInt64, Z: math.MinInt64}
@@ -41,12 +39,16 @@ func main() {
 	surface := 0
 	outside := map[aocmath.Point3D]bool{}
 	inside := map[aocmath.Point3D]bool{}
+	area := aocmath.Cuboid{
+		FrontBottomLeft: aocmath.Point3D{X: math.MinInt64, Y: math.MinInt64, Z: math.MinInt64},
+		BackTopRight:    aocmath.Point3D{X: math.MaxInt64, Y: math.MaxInt64, Z: math.MaxInt64},
+	}
 	for p := range points {
-		for _, n := range p.Neighbours(maxIntRange, maxIntRange, maxIntRange) {
+		for _, n := range p.Neighbours(area) {
 			if !points[n] && !inside[n] && !outside[n] {
 				visited := map[aocmath.Point3D]bool{n: true}
 				m := inside
-				if grow(n, min, max, points, visited) {
+				if grow(n, min, max, points, visited, area) {
 					m = outside
 				}
 				for v := range visited {
@@ -61,7 +63,7 @@ func main() {
 	fmt.Println(surface)
 }
 
-func grow(p aocmath.Point3D, min, max aocmath.Point3D, points, visited map[aocmath.Point3D]bool) bool {
+func grow(p aocmath.Point3D, min, max aocmath.Point3D, points, visited map[aocmath.Point3D]bool, area aocmath.Cuboid) bool {
 	if p.X < min.X || p.Y < min.Y || p.Z < min.Z {
 		return true
 	}
@@ -71,10 +73,10 @@ func grow(p aocmath.Point3D, min, max aocmath.Point3D, points, visited map[aocma
 	}
 
 	outside := false
-	for _, n := range p.Neighbours(maxIntRange, maxIntRange, maxIntRange) {
+	for _, n := range p.Neighbours(area) {
 		if !points[n] && !visited[n] {
 			visited[n] = true
-			outside = outside || grow(n, min, max, points, visited)
+			outside = outside || grow(n, min, max, points, visited, area)
 		}
 	}
 	return outside
