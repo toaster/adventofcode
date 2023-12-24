@@ -1,5 +1,9 @@
 package math
 
+import (
+	"slices"
+)
+
 // Range represents a range.
 type Range struct {
 	Start int
@@ -40,4 +44,18 @@ func (r *Range) Overlaps(other *Range) bool {
 	return r.Includes(other) ||
 		(r.Start >= other.Start && r.Start <= other.End) ||
 		(r.End >= other.Start && r.End <= other.End)
+}
+
+// SortRanges sorts a slice of ranges.
+func SortRanges(input []*Range) []*Range {
+	sorted := make([]*Range, len(input))
+	copy(sorted, input)
+	slices.SortFunc(sorted, func(a, b *Range) int {
+		if a.Start < b.Start {
+			return -1
+		}
+
+		return 1
+	})
+	return sorted
 }

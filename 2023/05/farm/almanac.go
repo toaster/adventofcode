@@ -5,7 +5,6 @@ import (
 
 	"github.com/toaster/advent_of_code/internal/io"
 	"github.com/toaster/advent_of_code/internal/math"
-	"github.com/toaster/advent_of_code/internal/util"
 )
 
 // ParseAlmanac parses an Almanac.
@@ -41,7 +40,7 @@ func (a *Almanac) NearestLocationForSeeds(seeds []*math.Range) int {
 	temperatures := a.lightToTemperature.lookup(lights)
 	humidities := a.temperatureToHumidity.lookup(temperatures)
 	locations := a.humidityToLocation.lookup(humidities)
-	return util.SortRanges(locations)[0].Start
+	return math.SortRanges(locations)[0].Start
 }
 
 func parseAlmanacMap(lines []string) (*almanacMap, []string) {
@@ -60,7 +59,7 @@ func parseAlmanacMap(lines []string) (*almanacMap, []string) {
 	}
 	// Now fill in identity mappings for the uncovered ranges.
 	// This simplifies lookups.
-	explicitlyMapped = util.SortRanges(explicitlyMapped)
+	explicitlyMapped = math.SortRanges(explicitlyMapped)
 	var mapped []*math.Range
 	cur := 0
 	for _, r := range explicitlyMapped {
