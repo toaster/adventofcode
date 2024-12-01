@@ -1,6 +1,10 @@
 package math
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/toaster/advent_of_code/internal/util"
+)
 
 // Edge is an edge of a weighted undirected graph connecting two Nodes.
 type Edge struct {
@@ -86,6 +90,67 @@ func CountPossibleDestinations[T comparable](adjacents func(T) []T, start T, max
 			return len(visited)
 		}
 	}
+}
+
+// FindLongestDistance is a depth-first implementation to search for the longest path in an unweighted graph.
+func FindLongestDistance[T comparable](adjacents func(T) []T, start, end T) (int, map[T]bool) {
+	visited := findLongestSubDistance(adjacents, start, end, map[T]bool{}, "")
+	return len(visited), visited
+}
+
+func findLongestSubDistance[T comparable](rawAdjacents func(T) []T, start T, end T, visited map[T]bool, prefix string) map[T]bool {
+	// fmt.Printf("%ssub distance from %#v\n", prefix, start)
+	if start == end {
+		return map[T]bool{start: true}
+	}
+
+	visited = util.CopyMap(visited)
+	visited[start] = true
+	adjacents := func(p T) []T {
+		var a []T
+		for _, n := range rawAdjacents(p) {
+			if !visited[n] {
+				a = append(a, n)
+			}
+		}
+		return a
+	}
+	maxDistance := -1
+	var path map[T]bool
+	straightPath := map[T]bool{}
+	offset := 1
+	for candidates := adjacents(start); len(candidates) == 1; candidates = adjacents(start) {
+		next := candidates[0]
+		if visited[next] {
+			return nil
+		}
+
+		if start == end {
+			return straightPath
+		}
+
+		visited[next] = true
+		straightPath[start] = true
+		offset++
+		start = next
+	}
+	// fmt.Printf("%sstraight path len %d\n", prefix, len(straightPath))
+	for _, next := range adjacents(start) {
+		if !visited[next] {
+			p := findLongestSubDistance(adjacents, next, end, visited, prefix+"  ")
+			// fmt.Printf("%scheck sub path len %d against %d\n", prefix, len(p), maxDistance)
+			if len(p) > maxDistance {
+				path = p
+			}
+		}
+	}
+	if path != nil {
+		for n := range straightPath {
+			path[n] = true
+		}
+		path[start] = true
+	}
+	return path
 }
 
 // FindShortestDistance is a broad-first implementation to search for the shortest path in an unweighted graph.
