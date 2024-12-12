@@ -28,6 +28,20 @@ func ParsePlan2D(lines []string, startMarker rune) Plan2D {
 	return plan
 }
 
+// Plan2DNeighboursWithExternal specifies to include neighbours off the map in Plan2D.Neighbours.
+func Plan2DNeighboursWithExternal() Plan2DNeighbourOption {
+	return func(options *plan2DNeighboursConfig) {
+		options.includeExternal = true
+	}
+}
+
+// Plan2DNeighboursWithLimiter specifies a limiter to use with Map.Neighbours.
+func Plan2DNeighboursWithLimiter(l func(Point2D) bool) Plan2DNeighbourOption {
+	return func(options *plan2DNeighboursConfig) {
+		options.limiter = l
+	}
+}
+
 // Plan2D represents a two-dimensional area.
 type Plan2D struct {
 	Start Point2D
@@ -71,31 +85,36 @@ func (p Plan2D) GetGuardRoute() *Route {
 }
 
 // Neighbours returns the reachable neighbours of a given point on the plan.
-func (p Plan2D) Neighbours(point Point2D) (neighbours []Point2D) {
-	if p.rangeY.Covers(point.Y) {
-		if point.X > p.rangeX.Start {
-			n := point.AddXY(-1, 0)
-			if !p.blocked[n] {
+// It allows to specify a limited (default: !blocked) and to include neighbours off the map.
+func (p Plan2D) Neighbours(pos Point2D, options ...Plan2DNeighbourOption) (neighbours []Point2D) {
+	cfg := &plan2DNeighboursConfig{limiter: func(n Point2D) bool { return !p.blocked[n] }}
+	for _, option := range options {
+		option(cfg)
+	}
+	if p.rangeY.Covers(pos.Y) {
+		if cfg.includeExternal || pos.X > p.rangeX.Start {
+			n := pos.AddXY(-1, 0)
+			if cfg.limiter(n) {
 				neighbours = append(neighbours, n)
 			}
 		}
-		if point.X < p.rangeX.End {
-			n := point.AddXY(1, 0)
-			if !p.blocked[n] {
+		if cfg.includeExternal || pos.X < p.rangeX.End {
+			n := pos.AddXY(1, 0)
+			if cfg.limiter(n) {
 				neighbours = append(neighbours, n)
 			}
 		}
 	}
-	if p.rangeX.Covers(point.X) {
-		if point.Y > p.rangeY.Start {
-			n := point.AddXY(0, -1)
-			if !p.blocked[n] {
+	if p.rangeX.Covers(pos.X) {
+		if cfg.includeExternal || pos.Y > p.rangeY.Start {
+			n := pos.AddXY(0, -1)
+			if cfg.limiter(n) {
 				neighbours = append(neighbours, n)
 			}
 		}
-		if point.Y < p.rangeY.End {
-			n := point.AddXY(0, 1)
-			if !p.blocked[n] {
+		if cfg.includeExternal || pos.Y < p.rangeY.End {
+			n := pos.AddXY(0, 1)
+			if cfg.limiter(n) {
 				neighbours = append(neighbours, n)
 			}
 		}
@@ -124,4 +143,12 @@ func (p Plan2D) Print(isMarked map[Point2D]bool) {
 
 func (p Plan2D) onMap(pos Point2D) bool {
 	return pos.X >= 0 && pos.X < p.width && pos.Y >= 0 && pos.Y < p.height
+}
+
+// Plan2DNeighbourOption is a function to provide an option to Plan2D.Neighbours.
+type Plan2DNeighbourOption func(*plan2DNeighboursConfig)
+
+type plan2DNeighboursConfig struct {
+	includeExternal bool
+	limiter         func(Point2D) bool
 }
