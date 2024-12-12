@@ -8,7 +8,10 @@ const (
 	West  Heading = '<'
 )
 
-// Heading is a direction someone might face on a two dimensional map (e.g., a Plan2D).
+// Headings contains all available headings.
+var Headings = []Heading{North, East, South, West}
+
+// Heading is a direction someone might face on a two-dimensional map (e.g., a Plan2D).
 type Heading rune
 
 // Facing returns the point that one looks at with this heading and the given position.
@@ -30,7 +33,22 @@ func (h Heading) String() string {
 	return string(h)
 }
 
-// TurnRight returns the heading that would result in a turn right of 90“.
+// TurnLeft returns the heading that would result in a turn left of 90°.
+func (h Heading) TurnLeft() Heading {
+	switch h {
+	case North:
+		return West
+	case East:
+		return North
+	case South:
+		return East
+	case West:
+		return South
+	}
+	return h
+}
+
+// TurnRight returns the heading that would result in a turn right of 90°.
 func (h Heading) TurnRight() Heading {
 	switch h {
 	case North:

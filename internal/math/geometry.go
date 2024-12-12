@@ -368,6 +368,15 @@ func (p Point2D) Adjacents() (adjacents []Point2D) {
 	return
 }
 
+// DirectAdjacents returns the adjacent positions (excluding diagonal) of the point.
+func (p Point2D) DirectAdjacents() (adjacents []Point2D) {
+	adjacents = append(adjacents, p.AddXY(0, -1))
+	adjacents = append(adjacents, p.AddXY(-1, 0))
+	adjacents = append(adjacents, p.AddXY(1, 0))
+	adjacents = append(adjacents, p.AddXY(0, 1))
+	return
+}
+
 // IsAdjacent returns whether the point is adjacent to the other (including diagonal).
 func (p Point2D) IsAdjacent(other Point2D) bool {
 	return other.X > p.X-2 && other.X < p.X+2 && other.Y > p.Y-2 && other.Y < p.Y+2
@@ -518,6 +527,12 @@ func (r *Ray2D) reaches(pX float64, pY float64) bool {
 type Rectangle2D struct {
 	TopLeft     Point2D
 	BottomRight Point2D
+}
+
+// Contains returns whether the Rectangle2D completely contains the other Rectangle2D.
+func (r Rectangle2D) Contains(other Rectangle2D) bool {
+	return other.TopLeft.X >= r.TopLeft.X && other.BottomRight.X <= r.BottomRight.X &&
+		other.TopLeft.Y >= r.TopLeft.Y && other.BottomRight.Y <= r.BottomRight.Y
 }
 
 // Sortable3DPoints is a sortable slice of Point3D.
