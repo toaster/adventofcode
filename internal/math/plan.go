@@ -8,13 +8,19 @@ import (
 
 // ParsePlan2D parses a Plan2D from the given input.
 func ParsePlan2D(lines []string, startMarker rune) Plan2D {
-	plan := Plan2D{blocked: map[Point2D]bool{}, heading: Heading(startMarker)}
+	plan := Plan2D{
+		blocked: map[Point2D]bool{},
+		heading: Heading(startMarker),
+		height:  len(lines),
+		tiles:   map[Point2D]rune{},
+	}
 	for y, line := range lines {
-		plan.height++
-		if plan.width == 0 {
-			plan.width = len(line)
-		}
 		for x, c := range line {
+			if plan.width == 0 {
+				plan.width = len(line)
+			}
+			pos := Point2D{X: x, Y: y}
+			plan.tiles[pos] = c
 			switch c {
 			case startMarker:
 				plan.Start = Point2D{X: x, Y: y}
@@ -51,6 +57,7 @@ type Plan2D struct {
 	height  int
 	rangeX  Range
 	rangeY  Range
+	tiles   map[Point2D]rune
 	width   int
 }
 
@@ -138,6 +145,20 @@ func (p Plan2D) Print(isMarked map[Point2D]bool) {
 			}
 		}
 		fmt.Println()
+	}
+}
+
+// TileAt returns the value of the tile at the given position of the map.
+func (p Plan2D) TileAt(pos Point2D) rune {
+	return p.tiles[pos]
+}
+
+// WithEachPoint iterates over all the points on the map and calls the given function.
+func (p Plan2D) WithEachPoint(callback func(Point2D)) {
+	for y := 0; y < p.height; y++ {
+		for x := 0; x < p.width; x++ {
+			callback(Point2D{X: x, Y: y})
+		}
 	}
 }
 

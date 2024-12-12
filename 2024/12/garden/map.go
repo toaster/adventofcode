@@ -8,52 +8,11 @@ import (
 
 // ParseMap creates a new Map from the input lines.
 func ParseMap(lines []string) Map {
-	m := Map{
-		height: len(lines),
-		tiles:  map[math.Point2D]rune{},
-	}
-	for y, line := range lines {
-		for x, c := range line {
-			if m.width == 0 {
-				m.width = len(line)
-			}
-			pos := math.Point2D{X: x, Y: y}
-			m.tiles[pos] = c
-		}
-	}
-	m.rangeX = math.Range{
-		Start: 0,
-		End:   m.width - 1,
-	}
-	m.rangeY = math.Range{
-		Start: 0,
-		End:   m.height - 1,
-	}
-	return m
-}
-
-// WithExternal specifies to include neighbours off the map in Map.Neighbours.
-func WithExternal() NeighbourOption {
-	return func(options *neighboursConfig) {
-		options.includeExternal = true
-	}
-}
-
-// WithLimiter specifies a limiter to use with Map.Neighbours.
-func WithLimiter(l func(math.Point2D) bool) NeighbourOption {
-	return func(options *neighboursConfig) {
-		options.limiter = l
-	}
+	return Map(math.ParsePlan2D(lines, ' '))
 }
 
 // Map is the map of a garden (https://adventofcode.com/2024/day/12).
-type Map struct {
-	height int
-	rangeX math.Range
-	rangeY math.Range
-	tiles  map[math.Point2D]rune
-	width  int
-}
+type Map math.Plan2D
 
 // ComputeFencingCosts computes the fencing costs of the garden.
 func (m Map) ComputeFencingCosts() int {
@@ -63,7 +22,7 @@ func (m Map) ComputeFencingCosts() int {
 		area := len(region)
 		perimeter := 0
 		for p := range region {
-			perimeter += len(m.Neighbours(p, WithExternal(), WithLimiter(func(p math.Point2D) bool { return !region[p] })))
+			perimeter += len(math.Plan2D(m).Neighbours(p, math.Plan2DNeighboursWithExternal(), math.Plan2DNeighboursWithLimiter(func(p math.Point2D) bool { return !region[p] })))
 		}
 		costs += area * perimeter
 	}
@@ -149,63 +108,24 @@ func sideFacing(pos math.Point2D, heading math.Heading) side {
 	panic("invalid heading")
 }
 
-// Neighbours returns the neighbours of a given math.Point2D on the Map.
-func (m Map) Neighbours(pos math.Point2D, options ...NeighbourOption) (neighbours []math.Point2D) {
-	cfg := &neighboursConfig{limiter: func(math.Point2D) bool { return true }}
-	for _, option := range options {
-		option(cfg)
-	}
-	if m.rangeY.Covers(pos.Y) {
-		if cfg.includeExternal || pos.X > m.rangeX.Start {
-			n := pos.AddXY(-1, 0)
-			if cfg.limiter(n) {
-				neighbours = append(neighbours, n)
-			}
-		}
-		if cfg.includeExternal || pos.X < m.rangeX.End {
-			n := pos.AddXY(1, 0)
-			if cfg.limiter(n) {
-				neighbours = append(neighbours, n)
-			}
-		}
-	}
-	if m.rangeX.Covers(pos.X) {
-		if cfg.includeExternal || pos.Y > m.rangeY.Start {
-			n := pos.AddXY(0, -1)
-			if cfg.limiter(n) {
-				neighbours = append(neighbours, n)
-			}
-		}
-		if cfg.includeExternal || pos.Y < m.rangeY.End {
-			n := pos.AddXY(0, 1)
-			if cfg.limiter(n) {
-				neighbours = append(neighbours, n)
-			}
-		}
-	}
-	return
-}
-
 func (m Map) computeRegions() map[math.Point2D]map[math.Point2D]bool {
 	regions := map[math.Point2D]map[math.Point2D]bool{}
 	belongsToRegion := map[math.Point2D]math.Point2D{}
-	for y := 0; y < m.height; y++ {
-		for x := 0; x < m.width; x++ {
-			pos := math.Point2D{X: x, Y: y}
-			if _, ok := belongsToRegion[pos]; ok {
-				continue
-			}
-
-			region := map[math.Point2D]bool{pos: true}
-			regions[pos] = region
-			m.growRegion(pos, region, pos, belongsToRegion)
+	math.Plan2D(m).WithEachPoint(func(pos math.Point2D) {
+		if _, ok := belongsToRegion[pos]; ok {
+			return
 		}
-	}
+
+		region := map[math.Point2D]bool{pos: true}
+		regions[pos] = region
+		m.growRegion(pos, region, pos, belongsToRegion)
+	})
 	return regions
 }
 
 func (m Map) growRegion(pos math.Point2D, region map[math.Point2D]bool, regionPos math.Point2D, belongsToRegion map[math.Point2D]math.Point2D) {
-	for _, n := range m.Neighbours(pos, WithLimiter(func(p math.Point2D) bool { return m.tiles[p] == m.tiles[pos] && !region[p] })) {
+	plan := math.Plan2D(m)
+	for _, n := range plan.Neighbours(pos, math.Plan2DNeighboursWithLimiter(func(p math.Point2D) bool { return plan.TileAt(p) == plan.TileAt(pos) && !region[p] })) {
 		region[n] = true
 		belongsToRegion[n] = regionPos
 		m.growRegion(n, region, regionPos, belongsToRegion)
