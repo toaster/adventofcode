@@ -1,10 +1,7 @@
 package math
 
 // Point2D is a two-dimensional point.
-type Point2D struct {
-	X int
-	Y int
-}
+type Point2D Vector2D
 
 // Add adds another two-dimensional coordinate to this one.
 func (p Point2D) Add(other Point2D) Point2D {
@@ -86,4 +83,10 @@ func (p Point2D) Subtract(other Point2D) Point2D {
 // This works like Subtract but saves the Point2D initialization if you only have the single dimensions at hand.
 func (p Point2D) SubtractXY(x, y int) Point2D {
 	return Point2D{p.X - x, p.Y - y}
+}
+
+// Vector2D is a two-dimensional vector used for position or velocity.
+type Vector2D struct {
+	X int
+	Y int
 }
