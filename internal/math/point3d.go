@@ -7,17 +7,18 @@ import (
 )
 
 // ParsePoint3D parses a Point3D from a set of values separated by the given separator.
-func ParsePoint3D(input string, separator string) Point3D {
+func ParsePoint3D(input, separator string) Point3D {
+	return Point3D(ParseVector3D(input, separator))
+}
+
+// ParseVector3D parses a Vector3D from a set of values separated by the given separator.
+func ParseVector3D(input, separator string) Vector3D {
 	values := io.ParseInts(input, separator)
-	return Point3D{X: values[0], Y: values[1], Z: values[2]}
+	return Vector3D{X: values[0], Y: values[1], Z: values[2]}
 }
 
 // Point3D is a three-dimensional point.
-type Point3D struct {
-	X int
-	Y int
-	Z int
-}
+type Point3D Vector3D
 
 // Add adds another three-dimensional coordinate to this one.
 func (p Point3D) Add(other Point3D) Point3D {
@@ -72,4 +73,11 @@ func (p Point3D) String() string {
 // The result is the coordinate of this point relative to the other one.
 func (p Point3D) Subtract(other Point3D) Point3D {
 	return Point3D{p.X - other.X, p.Y - other.Y, p.Z - other.Z}
+}
+
+// Vector3D is a three-dimensional vector used for position or velocity.
+type Vector3D struct {
+	X int
+	Y int
+	Z int
 }
