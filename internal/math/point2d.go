@@ -1,5 +1,18 @@
 package math
 
+import "github.com/toaster/advent_of_code/internal/io"
+
+// ParsePoint2D parses a Point2D from a set of values separated by the given separator.
+func ParsePoint2D(input, separator string) Point2D {
+	return Point2D(ParseVector2D(input, separator))
+}
+
+// ParseVector2D parses a Vector2D from a set of values separated by the given separator.
+func ParseVector2D(input, separator string) Vector2D {
+	values := io.ParseInts(input, separator)
+	return Vector2D{X: values[0], Y: values[1]}
+}
+
 // Point2D is a two-dimensional point.
 type Point2D Vector2D
 
@@ -44,6 +57,11 @@ func (p Point2D) IsAdjacent(other Point2D) bool {
 // IsGreaterThan returns whether any dimension of this point is greater than the respective dimension of the other point.
 func (p Point2D) IsGreaterThan(other Point2D) bool {
 	return p.X > other.X || p.Y > other.Y
+}
+
+// IsInside returns whether the point is covered by the given Rectangle2D.
+func (p Point2D) IsInside(area Rectangle2D) bool {
+	return p.X >= area.TopLeft.X && p.Y >= area.TopLeft.Y && p.X <= area.BottomRight.X && p.Y <= area.BottomRight.Y
 }
 
 // IsLessThan returns whether any dimension of this point is less than the respective dimension of the other point.
