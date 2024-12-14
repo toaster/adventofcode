@@ -15,15 +15,8 @@ type System struct {
 
 // Moon represents a moon in a system.
 type Moon struct {
-	Pos Vect
-	Vel Vect
-}
-
-// Vect is a three dimensional vector used for position or velocity.
-type Vect struct {
-	X int
-	Y int
-	Z int
+	Pos math.Vector3D
+	Vel math.Vector3D
 }
 
 // ParseSystem parses the input and returns the System it describes.
@@ -32,7 +25,7 @@ func ParseSystem(input string) *System {
 	lines := strings.Split(strings.TrimSpace(input), "\n")
 	for _, line := range lines {
 		coords := strings.Split(line[1:len(line)-1], ",")
-		s.Moons = append(s.Moons, &Moon{Pos: Vect{
+		s.Moons = append(s.Moons, &Moon{Pos: math.Vector3D{
 			X: parseCoord(coords[0]),
 			Y: parseCoord(coords[1]),
 			Z: parseCoord(coords[2]),
