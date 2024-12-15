@@ -55,6 +55,15 @@ func Plan2DNeighboursWithLimiter(l func(Point2D) bool) Plan2DNeighbourOption {
 	}
 }
 
+// Plan2DPrintAt specifies a printer for printing tiles which are considered empty.
+// The printer might return `false` if it does not print anything.
+// In this case, the default for empty spaces (`.`) is printed.
+func Plan2DPrintAt(print func(Point2D) bool) Plan2DPrintOption {
+	return func(config *plan2DPrintConfig) {
+		config.print = print
+	}
+}
+
 // Plan2DWithUnknownTileHandler specifies a handler for parsing unknown tiles.
 func Plan2DWithUnknownTileHandler(handleUnknownTile func(Point2D, rune)) Plan2DOption {
 	return func(config *plan2DConfig) {
@@ -149,17 +158,25 @@ func (p Plan2D) Neighbours(pos Point2D, options ...Plan2DNeighbourOption) (neigh
 }
 
 // Print prints the plan on stdout.
-func (p Plan2D) Print(isMarked map[Point2D]bool) {
+func (p Plan2D) Print(options ...Plan2DPrintOption) {
+	cfg := plan2DPrintConfig{
+		print: func(pos Point2D) bool {
+			if pos == p.Start {
+				fmt.Print("S")
+				return true
+			}
+			return false
+		},
+	}
+	for _, option := range options {
+		option(&cfg)
+	}
 	for y := 0; y < p.height; y++ {
 		for x := 0; x < p.width; x++ {
 			pos := Point2D{X: x, Y: y}
 			if p.blocked[pos] {
 				fmt.Print("#")
-			} else if isMarked[pos] {
-				fmt.Print("O")
-			} else if pos == p.Start {
-				fmt.Print("S")
-			} else {
+			} else if !cfg.print(pos) {
 				fmt.Print(".")
 			}
 		}
@@ -198,4 +215,11 @@ type Plan2DOption func(*plan2DConfig)
 
 type plan2DConfig struct {
 	handleUnknownTile func(Point2D, rune)
+}
+
+// Plan2DPrintOption is a function to provide an option to Plan2D.Print.
+type Plan2DPrintOption func(*plan2DPrintConfig)
+
+type plan2DPrintConfig struct {
+	print func(Point2D) bool
 }
