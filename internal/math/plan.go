@@ -82,6 +82,11 @@ func (p Plan2D) AddObstacle(pos Point2D) Plan2D {
 	return p
 }
 
+// Blocked returns whether the given position is blocked.
+func (p Plan2D) Blocked(position Point2D) bool {
+	return p.blocked[position]
+}
+
 // CountVisitedLocationsOfGuard follows the trace of the lab guard (https://adventofcode.com/2024/day/6)
 // and returns the amount of distinct locations it reaches before moving out of the area
 func (p Plan2D) CountVisitedLocationsOfGuard() any {
