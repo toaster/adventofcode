@@ -7,7 +7,11 @@ import (
 )
 
 // ParsePlan2D parses a Plan2D from the given input.
-func ParsePlan2D(lines []string, startMarker rune) Plan2D {
+func ParsePlan2D(lines []string, startMarker rune, options ...Plan2DOption) Plan2D {
+	cfg := plan2DConfig{handleUnknownTile: func(Point2D, rune) {}}
+	for _, option := range options {
+		option(&cfg)
+	}
 	plan := Plan2D{
 		blocked: map[Point2D]bool{},
 		heading: Heading(startMarker),
@@ -23,9 +27,12 @@ func ParsePlan2D(lines []string, startMarker rune) Plan2D {
 			plan.tiles[pos] = c
 			switch c {
 			case startMarker:
-				plan.Start = Point2D{X: x, Y: y}
+				plan.Start = pos
 			case '#':
-				plan.blocked[Point2D{X: x, Y: y}] = true
+				plan.blocked[pos] = true
+			case '.':
+			default:
+				cfg.handleUnknownTile(pos, c)
 			}
 		}
 	}
@@ -36,15 +43,22 @@ func ParsePlan2D(lines []string, startMarker rune) Plan2D {
 
 // Plan2DNeighboursWithExternal specifies to include neighbours off the map in Plan2D.Neighbours.
 func Plan2DNeighboursWithExternal() Plan2DNeighbourOption {
-	return func(options *plan2DNeighboursConfig) {
-		options.includeExternal = true
+	return func(config *plan2DNeighboursConfig) {
+		config.includeExternal = true
 	}
 }
 
 // Plan2DNeighboursWithLimiter specifies a limiter to use with Map.Neighbours.
 func Plan2DNeighboursWithLimiter(l func(Point2D) bool) Plan2DNeighbourOption {
-	return func(options *plan2DNeighboursConfig) {
-		options.limiter = l
+	return func(config *plan2DNeighboursConfig) {
+		config.limiter = l
+	}
+}
+
+// Plan2DWithUnknownTileHandler specifies a handler for parsing unknown tiles.
+func Plan2DWithUnknownTileHandler(handleUnknownTile func(Point2D, rune)) Plan2DOption {
+	return func(config *plan2DConfig) {
+		config.handleUnknownTile = handleUnknownTile
 	}
 }
 
@@ -172,4 +186,11 @@ type Plan2DNeighbourOption func(*plan2DNeighboursConfig)
 type plan2DNeighboursConfig struct {
 	includeExternal bool
 	limiter         func(Point2D) bool
+}
+
+// Plan2DOption is a function to provide an option to ParsePlan2D.
+type Plan2DOption func(*plan2DConfig)
+
+type plan2DConfig struct {
+	handleUnknownTile func(Point2D, rune)
 }
