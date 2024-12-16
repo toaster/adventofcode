@@ -120,7 +120,7 @@ func (p Plan2D) GetGuardRoute() *Route {
 }
 
 // Neighbours returns the reachable neighbours of a given point on the plan.
-// It allows to specify a limited (default: !blocked) and to include neighbours off the map.
+// It allows to specify a limiter (default: !blocked) and to include neighbours off the map.
 func (p Plan2D) Neighbours(pos Point2D, options ...Plan2DNeighbourOption) (neighbours []Point2D) {
 	cfg := &plan2DNeighboursConfig{limiter: func(n Point2D) bool { return !p.blocked[n] }}
 	for _, option := range options {
