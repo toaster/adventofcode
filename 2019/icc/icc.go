@@ -16,7 +16,7 @@ type ICC struct {
 	relBase int
 }
 
-// New creates a new IntCodeComputer reading from int and writing to out.
+// New creates a new IntCodeComputer reading from in and writing to out.
 func New(in, out chan int) *ICC {
 	c := ICC{in: in, out: out}
 	c.cmds = map[int]executor{
