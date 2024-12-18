@@ -71,6 +71,16 @@ func Plan2DWithUnknownTileHandler(handleUnknownTile func(Point2D, rune)) Plan2DO
 	}
 }
 
+// NewPlan2D returns a new empty plan with the given width and height
+func NewPlan2D(width, height int) Plan2D {
+	return Plan2D{
+		height: height,
+		rangeX: Range{End: width - 1},
+		rangeY: Range{End: height - 1},
+		width:  width,
+	}
+}
+
 // Plan2D represents a two-dimensional area.
 type Plan2D struct {
 	Start Point2D
