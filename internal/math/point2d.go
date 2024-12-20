@@ -91,6 +91,21 @@ func (p Point2D) Neighbours(area Rectangle2D) (neighbours []Point2D) {
 	return
 }
 
+// PointsWithinManhattanDistance returns all other points which manhattan distance to this point
+// is equal or less to the given distance.
+func (p Point2D) PointsWithinManhattanDistance(distance int) []Point2D {
+	points := make([]Point2D, 0, distance*distance*2)
+	for offsetY := 0; offsetY <= distance; offsetY++ {
+		for offsetX := -distance + offsetY; offsetX <= distance-offsetY; offsetX++ {
+			points = append(points, p.AddXY(offsetX, offsetY))
+			if offsetY > 0 {
+				points = append(points, p.AddXY(offsetX, -offsetY))
+			}
+		}
+	}
+	return points
+}
+
 // Subtract subtracts another two-dimensional coordinate from this one.
 // The result is the coordinate of this point relative to the other one.
 func (p Point2D) Subtract(other Point2D) Point2D {
