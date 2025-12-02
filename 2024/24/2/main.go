@@ -14,7 +14,10 @@ func main() {
 	start := make(chan bool)
 	wires := map[string]chan bool{}
 	input := strings.Split(io.ReadAll(), "\n\n")
-	for _, line := range strings.Split(input[0], "\n") {
+	values := strings.Split(input[0], "\n")
+	slices.Sort(values)
+	slices.Reverse(values)
+	for _, line := range values {
 		nameAndValue := strings.Split(line, ": ")
 		name := nameAndValue[0]
 		value := nameAndValue[1] == "1"
